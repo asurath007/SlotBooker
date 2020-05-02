@@ -1,0 +1,40 @@
+{
+  "project_info": {
+    "project_number": "548811709184",
+    "firebase_url": "https://slotbooker-3efd8.firebaseio.com",
+    "project_id": "slotbooker-3efd8",
+    "storage_bucket": "slotbooker-3efd8.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:548811709184:android:de5932ea477253b56131e5",
+        "android_client_info": {
+          "package_name": "com.slotbooker"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "548811709184-kcon0qgshlbfhbpuadjljf9pd2eje2lp.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyC_9U95eBmgiSSime1-h4Dt_coo2C17Zzs"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "548811709184-kcon0qgshlbfhbpuadjljf9pd2eje2lp.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

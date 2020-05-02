@@ -1,0 +1,130 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/cardView"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    >
+
+    <androidx.cardview.widget.CardView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        >
+        <RelativeLayout
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:padding="10dp"
+            android:layout_gravity="center">
+
+            <TextView
+                android:id="@+id/tv_title"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_centerHorizontal="true"
+                android:text="Enter Match Details" />
+
+            <EditText
+                android:id="@+id/et_title"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/tv_title"
+                android:layout_marginTop="15dp"
+                android:inputType="text"
+                android:autofillHints="Add Match"
+                android:hint="Match Title"
+                android:textSize="20sp"
+                android:textAlignment="center"/>
+
+            <EditText
+                android:id="@+id/et_map"
+                android:textAlignment="center"
+                android:layout_width="100dp"
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/et_title"
+                android:layout_alignStart="@+id/et_title"
+                android:layout_marginStart="0dp"
+                android:autofillHints="Add Map"
+                android:hint="Map"
+                android:inputType="text"
+                android:textSize="18sp" />
+
+
+            <EditText
+                android:id="@+id/et_mode"
+                android:layout_width="100dp"
+                android:textAlignment="center"
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/et_title"
+                android:layout_alignEnd="@+id/et_title"
+                android:layout_marginEnd="0dp"
+                android:autofillHints="TPP / FPP"
+                android:hint="Mode"
+                android:inputType="text"
+                android:textAllCaps="true"
+                android:textSize="18sp" />
+            <EditText
+                android:id="@+id/et_date"
+                android:textAlignment="center"
+                android:layout_width="100dp"
+                android:layout_height="wrap_content"
+                android:layout_alignStart="@+id/et_title"
+                android:layout_marginStart="0dp"
+                android:autofillHints="Add Date"
+                android:layout_below="@id/et_map"
+                android:hint="Date"
+                android:inputType="date"
+                android:textSize="16sp" />
+
+            <EditText
+                android:id="@+id/et_time"
+                android:textAlignment="center"
+                android:layout_width="100dp"
+                android:layout_height="wrap_content"
+                android:layout_alignEnd="@+id/et_title"
+                android:layout_marginEnd="0dp"
+                android:autofillHints="Add Time"
+                android:layout_below="@id/et_mode"
+                android:hint="Time"
+                android:inputType="time"
+                android:textAllCaps="true"
+                android:textSize="16sp" />
+
+            <EditText
+                android:id="@+id/et_prizeMoney"
+                android:layout_width="100dp"
+                android:textAlignment="center"
+                android:layout_height="wrap_content"
+                android:layout_alignStart="@+id/et_title"
+                android:layout_marginStart="0dp"
+                android:autofillHints="Add Prize Money"
+                android:layout_below="@id/et_date"
+                android:hint="Prize Money"
+                android:inputType="numberDecimal"
+                android:textSize="16sp" />
+
+            <EditText
+                android:id="@+id/et_entryFee"
+                android:layout_width="100dp"
+                android:textAlignment="center"
+                android:layout_height="wrap_content"
+                android:layout_alignEnd="@+id/et_title"
+                android:layout_marginEnd="0dp"
+                android:autofillHints="Add Entry Fee"
+                android:layout_below="@id/et_time"
+                android:hint="Entry Fee"
+                android:inputType="text"
+                android:textAllCaps="true"
+                android:textSize="16sp" />
+
+            <Button
+                android:id="@+id/btn_save_match_edit"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_below="@id/et_prizeMoney"
+                android:backgroundTint="@color/colorAccent"
+                android:text="Save"
+                />
+
+        </RelativeLayout>
+    </androidx.cardview.widget.CardView>
+
+</LinearLayout>

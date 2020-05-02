@@ -1,0 +1,98 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+
+    android:orientation="vertical"
+    android:layout_gravity="center"
+    android:gravity="center"
+    android:padding="16dp"
+    tools:context=".Registration.Solo">
+
+    <ProgressBar
+        android:id="@+id/solo_progressBar"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="20dp"
+        android:visibility="gone"
+        />
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:gravity="center"
+        android:layout_gravity="center">
+
+        <TextView
+            android:id="@+id/tv_solo"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:textSize="20sp"
+            android:layout_gravity="center"
+            android:gravity="center"
+            android:layout_marginBottom="100dp"
+            android:text="@string/solo_details"
+            />
+
+        <ProgressBar
+            android:id="@+id/progressbar_solo"
+            style="@android:style/Widget.ProgressBar.Horizontal"
+            android:layout_width="match_parent"
+            android:layout_height="5dp"
+            android:layout_marginBottom="50dp"
+             />
+
+        <EditText
+            android:id="@+id/et_solo"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:ems="10"
+            android:gravity="center"
+            android:layout_gravity="center"
+            android:inputType="textPersonName"
+            android:hint="@string/name"
+            android:autofillHints="Name"
+            android:layout_marginBottom="10dp"
+            />
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:gravity="center"
+            android:layout_gravity="center"
+            android:layout_marginBottom="50dp">
+
+            <TextView
+                android:id="@+id/tv_slot_solo"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textSize="16sp"
+                android:text="@string/select_a_slot"
+                />
+
+            <Spinner
+                android:id="@+id/spinner_solo"
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:layout_gravity="center"
+                android:gravity="center"
+                android:textAlignment="center"
+                />
+
+        </LinearLayout>
+
+
+        <Button
+            android:id="@+id/btn_solo_submit"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:text="@string/confirm_pay"
+            android:layout_marginBottom="20dp"
+            />
+
+    </LinearLayout>
+</LinearLayout>
