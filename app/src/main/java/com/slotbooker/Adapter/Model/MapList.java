@@ -4,16 +4,9 @@ import java.util.HashMap;
 import java.util.Map;
 
 public class MapList {
-    private String name;
-    private String map;
-    private String mode;
-    private String date;
-    private String time;
-    private String prizeMoney;
-    private String moneyBreakUp;
-    private String entryFee;
+    private String name,map,mode,date,time,type,id;
+    private String prizeMoney,moneyBreakUp,entryFee;
     private int progress;
-    private String id;
 
     public MapList(String newName, String newMap, String newMode, String newDate, String newTime, String newPrizeMoney, String newEntryFee) {
         this.name = newName;
@@ -24,6 +17,20 @@ public class MapList {
         this.prizeMoney = newPrizeMoney;
 //        this.moneyBreakUp = moneyBreakUp;
         this.entryFee = newEntryFee;
+//        this.progress = newProgress;
+        this.id= id;
+    }
+
+    public MapList(String newName, String newMap, String newMode, String newDate, String newTime, String newPrizeMoney, String newEntryFee, String newMoneyBreakUp, String newType) {
+        this.name = newName;
+        this.map = newMap;
+        this.mode = newMode;
+        this.date = newDate;
+        this.time = newTime;
+        this.prizeMoney = newPrizeMoney;
+        this.moneyBreakUp = newMoneyBreakUp;
+        this.entryFee = newEntryFee;
+        this.type = newType;
 //        this.progress = newProgress;
         this.id= id;
     }
@@ -44,6 +51,12 @@ public class MapList {
         this.progress = progress;
     }
 
+    public String getType() {
+        return type;
+    }
+    public void setType(String type) {
+        this.type = type;
+    }
 
     public String getMap() {
         return map;
@@ -133,8 +146,9 @@ public class MapList {
         match.put("date",this.date);
         match.put("time",this.time);
         match.put("prizeMoney",this.prizeMoney);
-//        match.put("moneyBreakUp",this.moneyBreakUp);
+        match.put("moneyBreakUp",this.moneyBreakUp);
         match.put("entryFee",this.entryFee);
+        match.put("type",this.type);
         match.put("progress",this.progress);
 
         return match;

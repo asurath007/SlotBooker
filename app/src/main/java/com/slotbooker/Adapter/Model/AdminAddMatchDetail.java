@@ -9,7 +9,10 @@ import android.content.Context;
 import android.content.Intent;
 import android.os.Build;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
+import android.widget.ArrayAdapter;
+import android.widget.AutoCompleteTextView;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
@@ -25,6 +28,9 @@ import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.QuerySnapshot;
+import com.google.firebase.iid.FirebaseInstanceId;
+import com.google.firebase.iid.InstanceIdResult;
+import com.google.firebase.messaging.FirebaseMessaging;
 import com.slotbooker.Adapter.AdminMapAdapter;
 import com.slotbooker.R;
 import com.slotbooker.UI.AdminAddMatch;
@@ -37,13 +43,18 @@ import java.util.Objects;
 
 public class AdminAddMatchDetail extends AppCompatActivity {
 
+    private static final String TAG = "AdminAddMatchDetails";
+    private static final String[] MAPS = new String[]{"Erangel", "Miramar", "Sanhok", "VIKENDI", "TDM"};
+    private static final String[] MODES = new String[]{"TPP","FPP"};
+    private static final String[] TYPE = new String[]{"SOLO","DUO","SQUAD"};
     private AlertDialog dialog;
     private AlertDialog.Builder dialogBuilder;
 
     private String id = "";
     private TextView entryFee,time, date,mode,map,title,prizeMoney;
-    private EditText et_title,et_map,et_mode,et_date,et_time,et_prizeMoney,et_entryFee;
-    private Button btn_edit,btn_delete;
+    private EditText et_title,et_date,et_time,et_prizeMoney,et_entryFee,et_moneyBreakUp;
+    private Button btn_edit,btn_delete, btn_send;
+    private AutoCompleteTextView et_map,et_mode,et_type;
     
     
     private FirebaseFirestore firestoreDB = FirebaseFirestore.getInstance();
@@ -57,6 +68,7 @@ public class AdminAddMatchDetail extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.admin_add_match_detail);
 
+
         title =findViewById(R.id.dtv_admin_match_title);
         map = findViewById(R.id.dtv_admin_edit_map);
         mode = findViewById(R.id.dtv_admin_edit_mode);
@@ -66,6 +78,7 @@ public class AdminAddMatchDetail extends AppCompatActivity {
         entryFee = findViewById(R.id.dtv_admin_edit_entryFee);
         btn_edit =findViewById(R.id.btn_edit);
         btn_delete=findViewById(R.id.btn_delete);
+        btn_send=findViewById(R.id.btn_send);
 
         Bundle bundle = getIntent().getExtras();
         if (bundle != null){
@@ -90,6 +103,13 @@ public class AdminAddMatchDetail extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 deletePopup();
+            }
+        });
+
+        btn_send.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+
             }
         });
 
@@ -149,9 +169,28 @@ public class AdminAddMatchDetail extends AppCompatActivity {
         et_time = view.findViewById(R.id.et_time);
         et_prizeMoney = view.findViewById(R.id.et_prizeMoney);
         et_entryFee = view.findViewById(R.id.et_entryFee);
+        et_type =view.findViewById(R.id.et_type);
+        et_moneyBreakUp = view.findViewById(R.id.et_moneyBreakUp);
 //        match_status = view.findViewById(R.id.match_status);
         Button btn_save = view.findViewById(R.id.btn_save_match_edit);
 
+        //creating drop-down for map,mode,type
+        ArrayAdapter<String> mapDropDown = new ArrayAdapter<String>(this,
+                 android.R.layout.simple_dropdown_item_1line, MAPS);
+        et_map.setAdapter(mapDropDown);
+        et_map.setThreshold(1);
+
+        ArrayAdapter<String> modeDropDown = new ArrayAdapter<String>(this,
+                android.R.layout.simple_dropdown_item_1line, MODES);
+        et_mode.setAdapter(modeDropDown);
+        et_mode.setThreshold(0);
+
+        ArrayAdapter<String> typeDropDown = new ArrayAdapter<String>(this,
+                android.R.layout.simple_dropdown_item_1line, TYPE);
+        et_type.setAdapter(typeDropDown);
+        et_type.setThreshold(0);
+
+        //get data passed
         Bundle bundle = getIntent().getExtras();
         if (bundle != null){
             id = bundle.getString("UId");
@@ -197,10 +236,11 @@ public class AdminAddMatchDetail extends AppCompatActivity {
         String newTime = et_time.getText().toString();
         String newPrizeMoney = et_prizeMoney.getText().toString();
         String newEntryFee = et_entryFee.getText().toString();
-//        String newMoneyBreakUp = et_moneyBreakUp.getText().toString();
+        String newMoneyBreakUp = et_moneyBreakUp.getText().toString();
+        String newType = et_type.getText().toString();
 //        int newProgress = match_status.getProgress();
 
-        Map<String, Object> updateMatch = new MapList(newName, newMap, newMode, newDate, newTime, newPrizeMoney, newEntryFee).newMatch();
+        Map<String, Object> updateMatch = new MapList(newName, newMap, newMode, newDate, newTime, newPrizeMoney, newEntryFee, newMoneyBreakUp, newType).newMatch();
 
         matchRef.document(id).set(updateMatch)
                 .addOnSuccessListener(new OnSuccessListener<Void>() {
@@ -216,5 +256,11 @@ public class AdminAddMatchDetail extends AppCompatActivity {
                     }
                 });
     }
+
+//    public void runtimeEnableAutoInit() {
+//        // [START fcm_runtime_enable_auto_init]
+//        FirebaseMessaging.getInstance().setAutoInitEnabled(true);
+//        // [END fcm_runtime_enable_auto_init]
+//    }
 
 }

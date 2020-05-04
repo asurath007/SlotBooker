@@ -22,6 +22,8 @@ import androidx.recyclerview.widget.RecyclerView;
 import android.os.Handler;
 import android.util.Log;
 import android.view.View;
+import android.widget.ArrayAdapter;
+import android.widget.AutoCompleteTextView;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ProgressBar;
@@ -48,6 +50,9 @@ import java.util.Objects;
 public class AdminAddMatch extends AppCompatActivity {
 
     private static final String TAG = "Admin Add Match";
+    private static final String[] MAPS = new String[]{"Erangel", "Miramar", "Sanhok", "VIKENDI", "TDM"};
+    private static final String[] MODES = new String[]{"TPP","FPP"};
+    private static final String[] TYPE = new String[]{"SOLO","DUO","SQUAD"};
     private RecyclerView recyclerView;
     private RecyclerView.Adapter mapAdapter;
     private List<MapList> mapLists;
@@ -55,16 +60,11 @@ public class AdminAddMatch extends AppCompatActivity {
     private AlertDialog.Builder dialogBuilder;
     private AlertDialog dialog;
 
-    private EditText et_entryFee;
-    private EditText et_prizeMoney;
-    private EditText et_time;
-    private EditText et_date;
-    private EditText et_mode;
-    private EditText et_map;
-    private EditText et_title;
-    private EditText et_moneyBreakUp;
+    private EditText et_title,et_date,et_time,et_prizeMoney,et_entryFee,et_moneyBreakUp;
+    private AutoCompleteTextView et_map,et_mode,et_type;
 //    private ProgressBar match_status;
-    String id = "";
+    private String id = "";
+
 
     private ListenerRegistration firestoreListener;
     private FirebaseFirestore firestoreDB = FirebaseFirestore.getInstance();
@@ -132,7 +132,27 @@ public class AdminAddMatch extends AppCompatActivity {
         et_time = view.findViewById(R.id.et_time);
         et_prizeMoney = view.findViewById(R.id.et_prizeMoney);
         et_entryFee = view.findViewById(R.id.et_entryFee);
+        et_type= view.findViewById(R.id.et_type);
+        et_moneyBreakUp = view.findViewById(R.id.et_moneyBreakUp);
+
 //        match_status = view.findViewById(R.id.match_status);
+
+        //creating drop-down for map,mode,type
+        ArrayAdapter<String> mapDropDown = new ArrayAdapter<String>(this,
+                android.R.layout.simple_dropdown_item_1line, MAPS);
+        et_map.setAdapter(mapDropDown);
+        et_map.setThreshold(1);
+
+        ArrayAdapter<String> modeDropDown = new ArrayAdapter<String>(this,
+                android.R.layout.simple_dropdown_item_1line, MODES);
+        et_mode.setAdapter(modeDropDown);
+        et_mode.setThreshold(0);
+
+        ArrayAdapter<String> typeDropDown = new ArrayAdapter<String>(this,
+                android.R.layout.simple_dropdown_item_1line, TYPE);
+        et_type.setAdapter(typeDropDown);
+        et_type.setThreshold(0);
+
         Button btn_save = view.findViewById(R.id.btn_save_match_edit);
         btn_save.setOnClickListener(new View.OnClickListener() {
             @RequiresApi(api = Build.VERSION_CODES.P)
@@ -165,10 +185,11 @@ public class AdminAddMatch extends AppCompatActivity {
         String newTime = et_time.getText().toString();
         String newPrizeMoney = et_prizeMoney.getText().toString();
         String newEntryFee = et_entryFee.getText().toString();
-//        String newMoneyBreakUp = et_moneyBreakUp.getText().toString();
+        String newType = et_type.getText().toString();
+        String newMoneyBreakUp = et_moneyBreakUp.getText().toString();
 //        int newProgress = match_status.getProgress();
         String newId = id;
-//
+
         newMatch.setName(newName);
         newMatch.setMap(newMap);
         newMatch.setMode(newMode);
@@ -176,11 +197,13 @@ public class AdminAddMatch extends AppCompatActivity {
         newMatch.setTime(newTime);
         newMatch.setPrizeMoney(newPrizeMoney);
         newMatch.setEntryFee(newEntryFee);
+        newMatch.setType(newType);
+        newMatch.setMoneyBreakUp(newMoneyBreakUp);
 //        newMatch.setProgress(newProgress);
         newMatch.setId(newId);
 
         //save to db
-        Map<String, Object> Match = new MapList(newName,newMap,newMode,newDate,newTime,newPrizeMoney,newEntryFee).newMatch();
+        Map<String, Object> Match = new MapList(newName,newMap,newMode,newDate,newTime,newPrizeMoney,newEntryFee,newMoneyBreakUp,newType).newMatch();
 
         firestoreDB.collection("Match List").add(Match)
                 .addOnSuccessListener(new OnSuccessListener<DocumentReference>() {
@@ -191,7 +214,7 @@ public class AdminAddMatch extends AppCompatActivity {
                 }).addOnFailureListener(new OnFailureListener() {
             @Override
             public void onFailure(@NonNull Exception e) {
-                Toast.makeText(AdminAddMatch.this, "Note adding Failed", Toast.LENGTH_SHORT).show();
+                Toast.makeText(AdminAddMatch.this, "Match adding Failed", Toast.LENGTH_SHORT).show();
             }
         });
 

@@ -60,5 +60,10 @@
     <string name="are_you_sure">Do you want to delete this match ?</string>
     <string name="no">NO</string>
     <string name="yes">YES</string>
+    <string name="room_id">Room Id</string>
+    <string name="enter_custom_room_password">Enter Custom Room Password</string>
+    <string name="enter_custom_room_id">Enter Custom Room Id</string>
+    <string name="room_password">Room Password</string>
+    <string name="fcm_token">FCM Token: %s</string>
 
 </resources>

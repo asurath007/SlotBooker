@@ -52,7 +52,7 @@ public class MapSelector extends AppCompatActivity {
         mapLists = new ArrayList<>();
         loadMatchList();
 
-        firestoreListener = matchRef
+        firestoreListener = matchRef.whereEqualTo("map","erangel")
                 .addSnapshotListener(new EventListener<QuerySnapshot>() {
                     @Override
                     public void onEvent(@Nullable QuerySnapshot queryDocumentSnapshots, @Nullable FirebaseFirestoreException e) {
@@ -78,7 +78,8 @@ public class MapSelector extends AppCompatActivity {
     }
 
         private void loadMatchList() {
-            matchRef.get().addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
+            matchRef.whereEqualTo("map","erangel").
+                    get().addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
                 @Override
                 public void onComplete(@NonNull Task<QuerySnapshot> task) {
 
