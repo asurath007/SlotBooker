@@ -19,17 +19,15 @@ import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.FirebaseFirestoreException;
 import com.google.firebase.firestore.ListenerRegistration;
 import com.google.firebase.firestore.QuerySnapshot;
-import com.slotbooker.Adapter.AdminMapAdapter;
 import com.slotbooker.Adapter.MapAdapter;
 import com.slotbooker.Adapter.Model.MapList;
 import com.slotbooker.R;
 
-import java.io.LineNumberInputStream;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
 
-public class MapSelector extends AppCompatActivity {
+public class SoloMapSelector extends AppCompatActivity {
     private static final String TAG = "Map Selector";
     private RecyclerView recyclerView;
     private RecyclerView.Adapter mapAdapter;
@@ -43,16 +41,16 @@ public class MapSelector extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.map_selector);
+        setContentView(R.layout.map_selector_solo);
 
-        recyclerView = findViewById(R.id.rv_map);
+        recyclerView = findViewById(R.id.rv_map_solo);
         recyclerView.setHasFixedSize(true);
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
 
         mapLists = new ArrayList<>();
         loadMatchList();
 
-        firestoreListener = matchRef.whereEqualTo("map","erangel")
+        firestoreListener = matchRef.whereEqualTo("type","SOLO")
                 .addSnapshotListener(new EventListener<QuerySnapshot>() {
                     @Override
                     public void onEvent(@Nullable QuerySnapshot queryDocumentSnapshots, @Nullable FirebaseFirestoreException e) {
@@ -97,7 +95,7 @@ public class MapSelector extends AppCompatActivity {
 //                    recyclerView.setAdapter(mapAdapter);
 //                    mapAdapter.notifyDataSetChanged();
                     } else {
-                        Toast.makeText(MapSelector.this, "Error getting Match List", Toast.LENGTH_LONG).show();
+                        Toast.makeText(SoloMapSelector.this, "Error getting Match List", Toast.LENGTH_LONG).show();
                     }
                 }
             });

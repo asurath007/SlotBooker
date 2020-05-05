@@ -2,7 +2,6 @@ package com.slotbooker;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.appcompat.widget.Toolbar;
 
 import android.content.Intent;
 import android.os.Bundle;
@@ -15,9 +14,8 @@ import com.google.android.gms.tasks.Task;
 import com.google.firebase.iid.FirebaseInstanceId;
 import com.google.firebase.iid.InstanceIdResult;
 import com.slotbooker.Registration.Duo;
-import com.slotbooker.Registration.Solo;
 import com.slotbooker.Registration.Squad;
-import com.slotbooker.UI.MapSelector;
+import com.slotbooker.UI.SoloMapSelector;
 
 public class Main2Activity extends AppCompatActivity {
 
@@ -70,7 +68,7 @@ public class Main2Activity extends AppCompatActivity {
 //                solo_count++;
 //                Bundle keeper = new Bundle();
 //                keeper.putInt("key", solo_count);
-                startActivity(new Intent(Main2Activity.this, MapSelector.class));
+                startActivity(new Intent(Main2Activity.this, SoloMapSelector.class));
 
             }
         });

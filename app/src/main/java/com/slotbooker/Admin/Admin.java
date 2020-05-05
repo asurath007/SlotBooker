@@ -89,8 +89,8 @@ public class Admin extends AppCompatActivity implements AdapterView.OnItemSelect
     }
 
     public void showDatePickerDialog(View v) {
-        DialogFragment newFragment = new datepicker();
-        newFragment.show(getSupportFragmentManager(), "datePicker");
+//        DialogFragment newFragment = new datepicker();
+//        newFragment.show(getSupportFragmentManager(), "datePicker");
     }
 
 }

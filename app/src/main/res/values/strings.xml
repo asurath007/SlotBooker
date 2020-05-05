@@ -65,5 +65,10 @@
     <string name="enter_custom_room_id">Enter Custom Room Id</string>
     <string name="room_password">Room Password</string>
     <string name="fcm_token">FCM Token: %s</string>
+    <string name="title_activity_main3">Main3Activity</string>
+    <string name="title_home">Home</string>
+    <string name="title_dashboard">Dashboard</string>
+    <string name="title_notifications">Notifications</string>
+    <string name="profile">Profile</string>
 
 </resources>

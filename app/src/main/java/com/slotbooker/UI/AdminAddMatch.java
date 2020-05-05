@@ -1,5 +1,8 @@
 package com.slotbooker.UI;
 
+import android.annotation.SuppressLint;
+import android.app.DatePickerDialog;
+import android.app.Dialog;
 import android.content.Intent;
 import android.os.Build;
 import android.os.Bundle;
@@ -16,6 +19,9 @@ import androidx.annotation.RequiresApi;
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
+import androidx.cardview.widget.CardView;
+import androidx.fragment.app.DialogFragment;
+import androidx.fragment.app.FragmentActivity;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
@@ -25,8 +31,10 @@ import android.view.View;
 import android.widget.ArrayAdapter;
 import android.widget.AutoCompleteTextView;
 import android.widget.Button;
+import android.widget.DatePicker;
 import android.widget.EditText;
 import android.widget.ProgressBar;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.google.android.material.snackbar.Snackbar;
@@ -40,10 +48,15 @@ import com.google.firebase.firestore.ListenerRegistration;
 import com.google.firebase.firestore.QuerySnapshot;
 import com.slotbooker.Adapter.AdminMapAdapter;
 import com.slotbooker.Adapter.Model.MapList;
+import com.slotbooker.Admin.datepicker;
 import com.slotbooker.R;
 
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.List;
+import java.util.Locale;
 import java.util.Map;
 import java.util.Objects;
 
@@ -64,6 +77,8 @@ public class AdminAddMatch extends AppCompatActivity {
     private AutoCompleteTextView et_map,et_mode,et_type;
 //    private ProgressBar match_status;
     private String id = "";
+
+    private int _date,_month,_year;
 
 
     private ListenerRegistration firestoreListener;
@@ -122,6 +137,7 @@ public class AdminAddMatch extends AppCompatActivity {
     }
 
 
+    @SuppressLint("SetTextI18n")
     private void popUp() {
         dialogBuilder = new AlertDialog.Builder(this);
         View view = getLayoutInflater().inflate(R.layout.match_edit_popup, null);
@@ -152,6 +168,24 @@ public class AdminAddMatch extends AppCompatActivity {
                 android.R.layout.simple_dropdown_item_1line, TYPE);
         et_type.setAdapter(typeDropDown);
         et_type.setThreshold(0);
+
+        //adding timePicker & datePicker
+        et_date.setClickable(true);
+        et_date.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                DialogFragment newFragment = new datepicker();
+                newFragment.show(getSupportFragmentManager(), "datePicker");
+            }
+        });
+
+        Bundle bundle = getIntent().getExtras();
+        if (bundle!=null){
+
+            et_date.setText(bundle.getString("date")+"/"+bundle.getString("month")+"/"+bundle.getString("year"));
+        }
+
+
 
         Button btn_save = view.findViewById(R.id.btn_save_match_edit);
         btn_save.setOnClickListener(new View.OnClickListener() {
@@ -262,5 +296,30 @@ public class AdminAddMatch extends AppCompatActivity {
 
         firestoreListener.remove();
     }
+
+//    class datepicker extends DialogFragment implements DatePickerDialog.OnDateSetListener{
+//
+//        public Dialog onCreateDialog(Bundle savedInstanceState) {
+//            // Use the current date as the default date in the picker
+//            final Calendar c = Calendar.getInstance();
+//            int year = c.get(Calendar.YEAR);
+//            int month = c.get(Calendar.MONTH);
+//            int day = c.get(Calendar.DAY_OF_MONTH);
+//
+//            // Create a new instance of DatePickerDialog and return it
+//            return new DatePickerDialog(getActivity(), this, year, month, day);
+//        }
+//        @Override
+//        public void onDateSet(DatePicker view, int year, int month, int date) {
+//            _date = date; _month = month; _year = year;
+//            displayDate(year, month, date);
+//        }
+//    }
+//
+//    private void displayDate(int year, int month, int date) {
+//        EditText et_date;
+//        et_date = findViewById(R.id.et_date);
+//        et_date.setText(date+"/"+month+"/"+year);
+//    }
 
 }

@@ -14,21 +14,22 @@
         android:roundIcon="@mipmap/ic_launcher_icon_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
+        <activity android:name=".UI.SquadMapSelector" />
         <!-- [START fcm_disable_auto_init] -->
         <meta-data
             android:name="firebase_messaging_auto_init_enabled"
             android:value="false" />
         <meta-data
             android:name="firebase_analytics_collection_enabled"
-            android:value="false" />
-        <!-- [END fcm_disable_auto_init] -->
+            android:value="false" /> <!-- [END fcm_disable_auto_init] -->
         <meta-data
             android:name="com.google.firebase.messaging.default_notification_icon"
             android:resource="@drawable/app_icon" />
         <meta-data
             android:name="com.google.firebase.messaging.default_notification_color"
             android:resource="@color/colorAccent" />
-        <activity android:name=".Adapter.Model.AdminAddMatchDetail"></activity>
+
+        <activity android:name=".Adapter.Model.AdminAddMatchDetail" />
         <activity
             android:name=".Admin.timepicker"
             android:parentActivityName=".Admin.Admin" />
@@ -46,15 +47,17 @@
         <activity
             android:name=".Registration.Solo"
             android:parentActivityName=".Main2Activity" />
-        <activity android:name=".Admin.Admin" />
-        <activity android:name=".UI.MapSelector" />
+        <activity android:name=".UI.SoloMapSelector" />
         <activity android:name=".MainActivity" />
         <activity android:name=".Main2Activity" />
+        <activity android:name=".Admin.Admin" />
         <activity
             android:name=".UI.AdminAddMatch"
             android:label="@string/title_activity_admin_add_match"
-            android:theme="@style/AppTheme.NoActionBar">
-            <intent-filter>
+            android:theme="@style/AppTheme.NoActionBar"/>
+        <activity android:name=".Main3Activity" >
+
+        <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
                 <category android:name="android.intent.category.LAUNCHER" />

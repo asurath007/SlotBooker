@@ -7,7 +7,7 @@
     android:layout_gravity="center"
     android:orientation="vertical"
     android:padding="5dp"
-    tools:context=".UI.MapSelector"
+    tools:context=".UI.SoloMapSelector"
     >
 
     <ImageView
@@ -21,7 +21,7 @@
         android:contentDescription="App Logo" />
 
     <androidx.recyclerview.widget.RecyclerView
-        android:id="@+id/rv_map"
+        android:id="@+id/rv_map_duo"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         />
