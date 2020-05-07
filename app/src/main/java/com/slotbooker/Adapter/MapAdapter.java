@@ -98,9 +98,9 @@ public class MapAdapter extends RecyclerView.Adapter<MapAdapter.ViewHolder> {
 
             //get to registration page
 
-            Intent intent = new Intent(context, Solo.class);
-            intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-            context.startActivity(intent);
+//            Intent intent = new Intent(context, Solo.class);
+//            intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+//            context.startActivity(intent);
         }
     }
 

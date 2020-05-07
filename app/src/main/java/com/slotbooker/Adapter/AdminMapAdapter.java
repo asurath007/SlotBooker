@@ -71,14 +71,7 @@ public class AdminMapAdapter extends RecyclerView.Adapter<AdminMapAdapter.ViewHo
         holder.mode.setText(map.getMode()); holder.date.setText(map.getDate());
         holder.time.setText(map.getTime()); holder.prizeMoney.setText(map.getPrizeMoney());
         holder.moneyBreakUp.setText(map.getMoneyBreakUp()); holder.entryFee.setText(map.getEntryFee());
-        holder.match_status.setProgress(map.getProgress());
-
-//        holder.btn_edit.setOnClickListener(new View.OnClickListener() {
-//            @Override
-//            public void onClick(View v) {
-//
-//            }
-//        });
+        holder.match_status.setProgress(map.getProgress()); holder.type.setText(map.getType());
     }
 
     @Override
@@ -88,7 +81,7 @@ public class AdminMapAdapter extends RecyclerView.Adapter<AdminMapAdapter.ViewHo
 
     public class ViewHolder extends RecyclerView.ViewHolder {
         public TextView name;
-        public TextView map;
+        public TextView map,type;
         public TextView mode;
         public TextView date;
         public TextView time;
@@ -118,6 +111,8 @@ public class AdminMapAdapter extends RecyclerView.Adapter<AdminMapAdapter.ViewHo
                     intent.putExtra("UTime", editMatch.getTime());
                     intent.putExtra("UPrizeMoney", editMatch.getPrizeMoney());
                     intent.putExtra("UEntryFee", editMatch.getEntryFee());
+                    intent.putExtra("UType",editMatch.getType());
+                    intent.putExtra("UMoneyBreakUp",editMatch.getMoneyBreakUp());
 
                     context.startActivity(intent);
                 }
@@ -128,6 +123,7 @@ public class AdminMapAdapter extends RecyclerView.Adapter<AdminMapAdapter.ViewHo
             date = itemView.findViewById(R.id.tv_admin_edit_date);
             time = itemView.findViewById(R.id.tv_admin_edit_time);
             mode = itemView.findViewById(R.id.tv_admin_edit_mode);
+            type = itemView.findViewById(R.id.tv_admin_type);
             prizeMoney = itemView.findViewById(R.id.tv_admin_edit_prizeMoney);
             moneyBreakUp = itemView.findViewById(R.id.tv_admin_edit_moneyBreakUp);
             entryFee = itemView.findViewById(R.id.tv_admin_edit_entryFee);

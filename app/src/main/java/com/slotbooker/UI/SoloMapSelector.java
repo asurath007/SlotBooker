@@ -76,7 +76,7 @@ public class SoloMapSelector extends AppCompatActivity {
     }
 
         private void loadMatchList() {
-            matchRef.whereEqualTo("map","erangel").
+            matchRef.
                     get().addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
                 @Override
                 public void onComplete(@NonNull Task<QuerySnapshot> task) {

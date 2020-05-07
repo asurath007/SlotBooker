@@ -3,6 +3,7 @@ package com.slotbooker.UI;
 import android.annotation.SuppressLint;
 import android.app.DatePickerDialog;
 import android.app.Dialog;
+import android.app.TimePickerDialog;
 import android.content.Intent;
 import android.os.Build;
 import android.os.Bundle;
@@ -35,6 +36,7 @@ import android.widget.DatePicker;
 import android.widget.EditText;
 import android.widget.ProgressBar;
 import android.widget.TextView;
+import android.widget.TimePicker;
 import android.widget.Toast;
 
 import com.google.android.material.snackbar.Snackbar;
@@ -48,7 +50,6 @@ import com.google.firebase.firestore.ListenerRegistration;
 import com.google.firebase.firestore.QuerySnapshot;
 import com.slotbooker.Adapter.AdminMapAdapter;
 import com.slotbooker.Adapter.Model.MapList;
-import com.slotbooker.Admin.datepicker;
 import com.slotbooker.R;
 
 import java.text.DateFormat;
@@ -75,10 +76,11 @@ public class AdminAddMatch extends AppCompatActivity {
 
     private EditText et_title,et_date,et_time,et_prizeMoney,et_entryFee,et_moneyBreakUp;
     private AutoCompleteTextView et_map,et_mode,et_type;
+    private Button btn_date, btn_time;
 //    private ProgressBar match_status;
     private String id = "";
 
-    private int _date,_month,_year;
+    private int mDate,mMonth,mYear,mHour,mMinute;
 
 
     private ListenerRegistration firestoreListener;
@@ -97,9 +99,6 @@ public class AdminAddMatch extends AppCompatActivity {
         fab.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-//                Snackbar.make(view, "Replace with your own action", Snackbar.LENGTH_LONG)
-//                        .setAction("Action", null).show();
-
                 popUp();
             }
         });
@@ -150,6 +149,8 @@ public class AdminAddMatch extends AppCompatActivity {
         et_entryFee = view.findViewById(R.id.et_entryFee);
         et_type= view.findViewById(R.id.et_type);
         et_moneyBreakUp = view.findViewById(R.id.et_moneyBreakUp);
+        btn_date = view.findViewById(R.id.btn_date);
+        btn_time =view.findViewById(R.id.btn_time);
 
 //        match_status = view.findViewById(R.id.match_status);
 
@@ -170,29 +171,61 @@ public class AdminAddMatch extends AppCompatActivity {
         et_type.setThreshold(0);
 
         //adding timePicker & datePicker
-        et_date.setClickable(true);
-        et_date.setOnClickListener(new View.OnClickListener() {
+        btn_date.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                DialogFragment newFragment = new datepicker();
-                newFragment.show(getSupportFragmentManager(), "datePicker");
+                final DatePickerDialog mDatePicker = new DatePickerDialog(AdminAddMatch.this, new DatePickerDialog.OnDateSetListener() {
+                    @Override
+                    public void onDateSet(DatePicker view, int year, int month, int dayOfMonth) {
+                        Calendar newDate = Calendar.getInstance();
+                        newDate.set(Calendar.DAY_OF_MONTH,dayOfMonth);
+                        newDate.set(Calendar.MONTH,month);
+                        newDate.set(Calendar.YEAR,year);
+                        et_date.setText(new StringBuilder().append(dayOfMonth).append("-").append(month+1).append("-").append(year));
+                        mMonth=month+1;
+                    }
+                },mYear, mMonth, mDate);
+                mDatePicker.setTitle("Set Match Date");
+                /** Hide Future Date Here**/
+                // mDatePicker.getDatePicker().setMaxDate(System.currentTimeMillis());
+
+                /** Hide Past Date Here**/
+                mDatePicker.getDatePicker().setMinDate(System.currentTimeMillis());
+                mDatePicker.show();
             }
         });
+        btn_time.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                final TimePickerDialog mTimePicker = new TimePickerDialog(AdminAddMatch.this, new TimePickerDialog.OnTimeSetListener() {
+                    @Override
+                    public void onTimeSet(TimePicker view, int hourOfDay, int minute) {
+                        Calendar newTime = Calendar.getInstance();
+                        newTime.set(Calendar.HOUR_OF_DAY, hourOfDay);
+                        newTime.set(Calendar.MINUTE, minute);
 
-        Bundle bundle = getIntent().getExtras();
-        if (bundle!=null){
-
-            et_date.setText(bundle.getString("date")+"/"+bundle.getString("month")+"/"+bundle.getString("year"));
-        }
-
-
+                        mHour = hourOfDay;
+                        String am_pm;
+                        if (mHour>12){
+                            mHour = mHour-12;
+                            am_pm = "PM";
+                        }else{
+                            am_pm = "AM";
+                        }
+                        et_time.setText(new StringBuilder().append(mHour).append(":").append(minute).append(" ").append(am_pm));
+                    }
+                },mHour,mMinute,false);
+                mTimePicker.setTitle("Set Match Time");
+                mTimePicker.show();
+            }
+        });
 
         Button btn_save = view.findViewById(R.id.btn_save_match_edit);
         btn_save.setOnClickListener(new View.OnClickListener() {
             @RequiresApi(api = Build.VERSION_CODES.P)
             @Override
             public void onClick(View v) {
-                //Save to DataBase & go to next screen
+                //Save to DataBase & go to main screen
                 if (et_title.getText().toString().isEmpty() || et_date.getText().toString().isEmpty() ||
                         et_entryFee.getText().toString().isEmpty() || et_date.getText().toString().isEmpty() ||
                         et_map.getText().toString().isEmpty() || et_mode.getText().toString().isEmpty() ||
@@ -297,29 +330,5 @@ public class AdminAddMatch extends AppCompatActivity {
         firestoreListener.remove();
     }
 
-//    class datepicker extends DialogFragment implements DatePickerDialog.OnDateSetListener{
-//
-//        public Dialog onCreateDialog(Bundle savedInstanceState) {
-//            // Use the current date as the default date in the picker
-//            final Calendar c = Calendar.getInstance();
-//            int year = c.get(Calendar.YEAR);
-//            int month = c.get(Calendar.MONTH);
-//            int day = c.get(Calendar.DAY_OF_MONTH);
-//
-//            // Create a new instance of DatePickerDialog and return it
-//            return new DatePickerDialog(getActivity(), this, year, month, day);
-//        }
-//        @Override
-//        public void onDateSet(DatePicker view, int year, int month, int date) {
-//            _date = date; _month = month; _year = year;
-//            displayDate(year, month, date);
-//        }
-//    }
-//
-//    private void displayDate(int year, int month, int date) {
-//        EditText et_date;
-//        et_date = findViewById(R.id.et_date);
-//        et_date.setText(date+"/"+month+"/"+year);
-//    }
 
 }

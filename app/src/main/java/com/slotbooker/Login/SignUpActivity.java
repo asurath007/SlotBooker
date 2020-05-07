@@ -131,6 +131,7 @@ public class SignUpActivity extends AppCompatActivity {
                                 Map<String , String> userObj = new HashMap<>();
                                 userObj.put("userId",currentUserId);
                                 userObj.put("userName", username);
+                                userObj.put("userEmail",email);
 
                                 //save to db
                                 collectionReference.add(userObj)
@@ -149,10 +150,12 @@ public class SignUpActivity extends AppCompatActivity {
                                                             BookAPI api = BookAPI.getInstance();
                                                             api.setUsername(name);
                                                             api.setUserId(currentUserId);
+                                                            api.setUserEmail(email);
 
                                                             Intent intent = new Intent(SignUpActivity.this, LoginActivity.class);
                                                             intent.putExtra("userName", name);
                                                             intent.putExtra("userId", currentUserId);
+                                                            intent.putExtra("userEmail",email);
                                                             startActivity(intent);
 
                                                         }else {

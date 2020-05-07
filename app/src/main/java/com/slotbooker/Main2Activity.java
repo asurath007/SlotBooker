@@ -15,7 +15,9 @@ import com.google.firebase.iid.FirebaseInstanceId;
 import com.google.firebase.iid.InstanceIdResult;
 import com.slotbooker.Registration.Duo;
 import com.slotbooker.Registration.Squad;
+import com.slotbooker.UI.DuoMapSelector;
 import com.slotbooker.UI.SoloMapSelector;
+import com.slotbooker.UI.SquadMapSelector;
 
 public class Main2Activity extends AppCompatActivity {
 
@@ -32,24 +34,24 @@ public class Main2Activity extends AppCompatActivity {
         setTheme(R.style.AppTheme);
         setContentView(R.layout.activity_main2);
 
-        // Get token
-        // [START retrieve_current_token]
-        FirebaseInstanceId.getInstance().getInstanceId()
-                .addOnCompleteListener(new OnCompleteListener<InstanceIdResult>() {
-                    @Override
-                    public void onComplete(@NonNull Task<InstanceIdResult> task) {
-                        if (!task.isSuccessful()) {
-//To do//
-                            return;
-                        }
-
-// Get the Instance ID token//
-                        String token = task.getResult().getToken();
-                        String msg = getString(R.string.fcm_token, token);
-                        Log.d(TAG, msg);
-
-                    }
-                });
+//        // Get token
+//        // [START retrieve_current_token]
+//        FirebaseInstanceId.getInstance().getInstanceId()
+//                .addOnCompleteListener(new OnCompleteListener<InstanceIdResult>() {
+//                    @Override
+//                    public void onComplete(@NonNull Task<InstanceIdResult> task) {
+//                        if (!task.isSuccessful()) {
+////To do//
+//                            return;
+//                        }
+//
+//// Get the Instance ID token//
+//                        String token = task.getResult().getToken();
+//                        String msg = getString(R.string.fcm_token, token);
+//                        Log.d(TAG, msg);
+//
+//                    }
+//                });
 
 
 
@@ -77,7 +79,7 @@ public class Main2Activity extends AppCompatActivity {
         btn_duo.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                startActivity(new Intent(Main2Activity.this, Duo.class));
+                startActivity(new Intent(Main2Activity.this, DuoMapSelector.class));
 
             }
         });
@@ -85,7 +87,7 @@ public class Main2Activity extends AppCompatActivity {
         btn_squad.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                startActivity(new Intent(Main2Activity.this, Squad.class));
+                startActivity(new Intent(Main2Activity.this, SquadMapSelector.class));
             }
         });
     }

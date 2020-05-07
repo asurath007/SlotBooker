@@ -9,6 +9,7 @@ import android.content.Intent;
 import android.content.SharedPreferences;
 import android.net.Uri;
 import android.os.Bundle;
+import android.preference.PreferenceManager;
 import android.text.TextUtils;
 import android.util.Log;
 import android.view.View;
@@ -40,7 +41,9 @@ import com.google.firebase.firestore.QueryDocumentSnapshot;
 import com.google.firebase.firestore.QuerySnapshot;
 import com.slotbooker.Admin.Admin;
 import com.slotbooker.Main2Activity;
+import com.slotbooker.Main3Activity;
 import com.slotbooker.R;
+import com.slotbooker.UI.AdminAddMatch;
 import com.slotbooker.Util.*;
 
 import java.util.Objects;
@@ -120,10 +123,20 @@ public class LoginActivity extends AppCompatActivity {
 //        signInButton.setColorScheme(SignInButton.COLOR_LIGHT);
 //        // [END customize_button]
 **/
+
         //check if previously logged
         if (sp.getBoolean("logged",false)){
             skipLogin();
         }
+
+//        Bundle bundle = getIntent().getExtras();
+////        sp.getBoolean(bundle.getString("logged"));
+//        final SharedPreferences sp = PreferenceManager.getDefaultSharedPreferences(this);
+//        SharedPreferences.Editor editor = sp.edit();
+//        editor.clear();
+//        editor.apply();
+
+
 
         btn_create_account.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -157,18 +170,17 @@ public class LoginActivity extends AppCompatActivity {
         host_link.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                startActivity(new Intent(LoginActivity.this, Admin.class));
+                startActivity(new Intent(LoginActivity.this, AdminAddMatch.class));
             }
         });
 
     }
 
     private void skipLogin() {
-        Intent prevLogIn = new Intent(getApplicationContext(), Main2Activity.class);
+        Intent prevLogIn = new Intent(getApplicationContext(), Main3Activity.class);
         startActivity(prevLogIn);
         finish();
     }
-
     private void loginEmailPasswordUser(String email, String pwd) {
 
         login_progressBar.setVisibility(View.VISIBLE);
@@ -204,6 +216,7 @@ public class LoginActivity extends AppCompatActivity {
                                                 BookAPI api = BookAPI.getInstance();
                                                 api.setUsername(snapshot.getString("userName"));
                                                 api.setUserId(snapshot.getString("userId"));
+                                                api.setUserEmail(snapshot.getString("userEmail"));
 
                                                 }
                                             }
@@ -215,7 +228,7 @@ public class LoginActivity extends AppCompatActivity {
                 @Override
                 public void onSuccess(AuthResult authResult) {
                     //next activity
-                    startActivity(new Intent(LoginActivity.this, Main2Activity.class));
+                    startActivity(new Intent(LoginActivity.this, Main3Activity.class));
                     finish();
                 }
             })

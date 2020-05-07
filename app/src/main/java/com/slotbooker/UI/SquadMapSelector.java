@@ -42,7 +42,7 @@ public class SquadMapSelector extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.map_selector_solo);
+        setContentView(R.layout.map_selector_squad);
 
         recyclerView = findViewById(R.id.rv_map_squad);
         recyclerView.setHasFixedSize(true);
@@ -77,7 +77,7 @@ public class SquadMapSelector extends AppCompatActivity {
     }
 
     private void loadMatchList() {
-        matchRef.whereEqualTo("map","erangel").
+        matchRef.
                 get().addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
             @Override
             public void onComplete(@NonNull Task<QuerySnapshot> task) {

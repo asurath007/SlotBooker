@@ -18,6 +18,7 @@ import java.util.List;
 public class BookAPI extends Application {
     private String username;
     private String userId;
+    private String userEmail;
     private static BookAPI instance;
 
     public static BookAPI getInstance(){
@@ -27,6 +28,14 @@ public class BookAPI extends Application {
     }
 
     public BookAPI(){}
+
+    public String getUserEmail() {
+        return userEmail;
+    }
+
+    public void setUserEmail(String userEmail) {
+        this.userEmail = userEmail;
+    }
 
     public String getUsername() {
         return username;
