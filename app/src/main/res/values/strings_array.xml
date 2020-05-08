@@ -20,4 +20,12 @@
         <item>Warehouse</item>
 
     </string-array>
+
+    <string-array name = "match_type">
+        <item> </item>
+        <item>SOLO</item>
+        <item>DUO</item>
+        <item>SQUAD</item>
+        <item>TDM</item>
+    </string-array>
 </resources>

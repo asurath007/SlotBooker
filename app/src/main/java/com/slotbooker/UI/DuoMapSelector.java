@@ -47,6 +47,7 @@ public class DuoMapSelector extends AppCompatActivity {
         recyclerView.setHasFixedSize(true);
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
 
+
         mapLists = new ArrayList<>();
         loadMatchList();
 
@@ -68,7 +69,7 @@ public class DuoMapSelector extends AppCompatActivity {
                             match.setId(doc.getId());
                             getMatchList.add(match);
                         }
-                        mapAdapter = new MapAdapter(getMatchList, getApplicationContext(), firestoreDB);
+                        mapAdapter = new MapAdapter(getMatchList, getApplicationContext(), firestoreDB, "DUO");
                         recyclerView.setAdapter(mapAdapter);
                         mapAdapter.notifyDataSetChanged();
                     }

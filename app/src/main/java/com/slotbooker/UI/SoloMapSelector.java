@@ -68,7 +68,7 @@ public class SoloMapSelector extends AppCompatActivity {
                             match.setId(doc.getId());
                             getMatchList.add(match);
                         }
-                        mapAdapter = new MapAdapter(getMatchList, getApplicationContext(), firestoreDB);
+                        mapAdapter = new MapAdapter(getMatchList, getApplicationContext(), firestoreDB, "SOLO");
                         recyclerView.setAdapter(mapAdapter);
                         mapAdapter.notifyDataSetChanged();
                     }

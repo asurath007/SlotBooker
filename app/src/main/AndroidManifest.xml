@@ -43,14 +43,13 @@
         <activity android:name=".UI.SquadMapSelector" />
 
         <activity android:name=".Main3Activity" />
-        <activity android:name=".Main2Activity" />
+        <activity android:name=".MainActivity" />
         <activity android:name=".Admin.Admin" />
         <activity
             android:name=".UI.AdminAddMatch"
             android:label="@string/title_activity_admin_add_match"
             android:theme="@style/AppTheme.NoActionBar"/>
-        <activity android:name=".MainActivity" >
-
+        <activity android:name=".Main2Activity" >
         <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 

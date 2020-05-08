@@ -118,7 +118,7 @@ public class AdminAddMatchDetail extends AppCompatActivity {
         btn_send.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-
+                //send notification
             }
         });
 

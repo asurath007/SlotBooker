@@ -69,7 +69,7 @@ public class SquadMapSelector extends AppCompatActivity {
                             match.setId(doc.getId());
                             getMatchList.add(match);
                         }
-                        mapAdapter = new MapAdapter(getMatchList, getApplicationContext(), firestoreDB);
+                        mapAdapter = new MapAdapter(getMatchList, getApplicationContext(), firestoreDB, "SQUAD");
                         recyclerView.setAdapter(mapAdapter);
                         mapAdapter.notifyDataSetChanged();
                     }

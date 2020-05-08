@@ -36,7 +36,7 @@ public class Duo extends AppCompatActivity implements AdapterView.OnItemSelected
 
 
     private FirebaseFirestore db = FirebaseFirestore.getInstance();
-    private CollectionReference collectionReference = db.collection("Duo Registration");
+    private CollectionReference collectionReference = db.collection("Match List").document("Duo Match").collection("Match List");
 //    private DocumentReference documentReference = db.collection("Solo Registration").document("Team[]");
 
 
@@ -110,7 +110,7 @@ public class Duo extends AppCompatActivity implements AdapterView.OnItemSelected
         String text = parent.getSelectedItem().toString();
 
         // Showing selected spinner item
-        Toast.makeText(parent.getContext(), "Selected: " + item, Toast.LENGTH_LONG).show();
+        Toast.makeText(parent.getContext(), "Selected: " + text + item, Toast.LENGTH_LONG).show();
 
     }
 

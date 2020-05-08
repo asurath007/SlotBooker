@@ -57,6 +57,7 @@ public class ProfileFragment extends Fragment {
 
         final EditText firstName = root.findViewById(R.id.prof_first_name);
         final EditText lastName = root.findViewById(R.id.prof_last_name);
+        final EditText pubgUsername = root.findViewById(R.id.pubg_username);
 
         final TextView email = root.findViewById(R.id.prof_email);
         final TextView userName = root.findViewById(R.id.prof_username);
@@ -112,6 +113,7 @@ public class ProfileFragment extends Fragment {
                         //setting fields editable on button click and display save button
                         firstName.setFocusableInTouchMode(true);
                         lastName.setFocusableInTouchMode(true);
+                        pubgUsername.setFocusableInTouchMode(true);
                         btn_prof_save.setVisibility(View.VISIBLE);
                     }
                 });
@@ -126,6 +128,7 @@ public class ProfileFragment extends Fragment {
                 btn_prof_logout.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
+                        // log out user from app & show login screen
                         SharedPreferences sp = getContext().getSharedPreferences("login",MODE_PRIVATE);
                         sp.edit().putBoolean("logged",false).apply();
 
@@ -137,12 +140,6 @@ public class ProfileFragment extends Fragment {
             }
         });
         return root;
-//        <ImageView
-//        android:layout_width="150dp"
-//        android:layout_height="150dp"
-//        android:src="@drawable/app_icon"
-//        android:layout_marginBottom="15dp"
-//                />
 
     }
 }

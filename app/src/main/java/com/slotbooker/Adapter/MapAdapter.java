@@ -8,6 +8,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.PopupMenu;
 import android.widget.ProgressBar;
+import android.widget.Switch;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
@@ -16,7 +17,9 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.slotbooker.Adapter.Model.MapList;
 import com.slotbooker.R;
+import com.slotbooker.Registration.Duo;
 import com.slotbooker.Registration.Solo;
+import com.slotbooker.Registration.Squad;
 
 import java.util.List;
 
@@ -24,6 +27,7 @@ public class MapAdapter extends RecyclerView.Adapter<MapAdapter.ViewHolder> {
     private Context context;
     private List<MapList> mapList;
     private FirebaseFirestore firestoreDB = FirebaseFirestore.getInstance();
+    private String mTag;
 
     public MapAdapter(Context context, List mapList){
         this.context = context;
@@ -32,10 +36,11 @@ public class MapAdapter extends RecyclerView.Adapter<MapAdapter.ViewHolder> {
 
     }
 
-    public MapAdapter(List<MapList> getMatchList, Context applicationContext, FirebaseFirestore firestoreDB) {
+    public MapAdapter(List<MapList> getMatchList, Context applicationContext, FirebaseFirestore firestoreDB, String Tag) {
         this.mapList = getMatchList;
         this.context = applicationContext;
         this.firestoreDB = firestoreDB;
+        this.mTag = Tag;
     }
 
     @NonNull
@@ -43,7 +48,7 @@ public class MapAdapter extends RecyclerView.Adapter<MapAdapter.ViewHolder> {
     public ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
         View view = LayoutInflater.from(parent.getContext())
                 .inflate(R.layout.maps_list_row, parent, false);
-        return new ViewHolder(view); //view from the ViewHolder @end is passed
+        return new ViewHolder(view, mTag); //view from the ViewHolder @end is passed
     }
 
     @Override
@@ -74,9 +79,9 @@ public class MapAdapter extends RecyclerView.Adapter<MapAdapter.ViewHolder> {
         public ProgressBar match_status;
 
 
-        public ViewHolder(@NonNull View itemView) {
+        public ViewHolder(@NonNull View itemView, String tag) {
             super(itemView);
-
+            mTag = tag;
             itemView.setOnClickListener(this);
 
             name = itemView.findViewById(R.id.tv_match_title);
@@ -92,17 +97,29 @@ public class MapAdapter extends RecyclerView.Adapter<MapAdapter.ViewHolder> {
 
         @Override
         public void onClick(View v) {
+
             int position = getAdapterPosition();
 
-//            MapList list =mapList.get(position);
+            MapList list = mapList.get(position);
 
             //get to registration page
+            switch (mTag){
+                case "SOLO":
+                    Intent intentSolo = new Intent(context, Solo.class);
+                    intentSolo.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+                    context.startActivity(intentSolo);
+                    break;
+                case "DUO":
+                    Intent intentDuo = new Intent(context, Duo.class);
+                    intentDuo.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+                    context.startActivity(intentDuo);
+                case "SQUAD":
+                    Intent intentSquad = new Intent(context, Squad.class);
+                    intentSquad.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+                    context.startActivity(intentSquad);
+            }
 
-//            Intent intent = new Intent(context, Solo.class);
-//            intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-//            context.startActivity(intent);
         }
     }
-
 
 }

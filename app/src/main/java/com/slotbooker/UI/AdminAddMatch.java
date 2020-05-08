@@ -29,12 +29,14 @@ import androidx.recyclerview.widget.RecyclerView;
 import android.os.Handler;
 import android.util.Log;
 import android.view.View;
+import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.AutoCompleteTextView;
 import android.widget.Button;
 import android.widget.DatePicker;
 import android.widget.EditText;
 import android.widget.ProgressBar;
+import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.TimePicker;
 import android.widget.Toast;
@@ -86,7 +88,7 @@ public class AdminAddMatch extends AppCompatActivity {
     private ListenerRegistration firestoreListener;
     private FirebaseFirestore firestoreDB = FirebaseFirestore.getInstance();
     private CollectionReference matchRef = firestoreDB.collection("Match List");
-    private DocumentReference matchDetail = firestoreDB.document("Match List/Match id");
+//    private DocumentReference soloList = firestoreDB.document("Match List/Solo Match/Match List");
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -110,8 +112,7 @@ public class AdminAddMatch extends AppCompatActivity {
         // get items from db
         loadMatchFromDB();
 
-        firestoreListener = matchRef
-                .addSnapshotListener(new EventListener<QuerySnapshot>() {
+        firestoreListener = matchRef.addSnapshotListener(new EventListener<QuerySnapshot>() {
                     @Override
                     public void onEvent(@Nullable QuerySnapshot queryDocumentSnapshots, @Nullable FirebaseFirestoreException e) {
                         if (e != null) {
@@ -133,6 +134,7 @@ public class AdminAddMatch extends AppCompatActivity {
                         mapAdapter.notifyDataSetChanged();
                     }
                 });
+
     }
 
 
@@ -287,6 +289,56 @@ public class AdminAddMatch extends AppCompatActivity {
 
         Snackbar.make(v,"Match Details Saved", Snackbar.LENGTH_SHORT).show();
 
+        //adding data to sub-collections
+        if (et_type.getText().toString().equals("SOLO")){
+            Map<String, Object> SoloMatch = new MapList(newName,newMap,newMode,newDate,newTime,newPrizeMoney,newEntryFee,newMoneyBreakUp,newType).newMatch();
+            firestoreDB.collection("Match List").document("Solo Match")
+                    .collection("Match List").add(SoloMatch)
+                    .addOnSuccessListener(new OnSuccessListener<DocumentReference>() {
+                        @Override
+                        public void onSuccess(DocumentReference documentReference) {
+                            Toast.makeText(AdminAddMatch.this, "Match has been Added", Toast.LENGTH_SHORT).show();
+                        }
+                    }).addOnFailureListener(new OnFailureListener() {
+                @Override
+                public void onFailure(@NonNull Exception e) {
+                    Toast.makeText(AdminAddMatch.this, "Match adding Failed", Toast.LENGTH_SHORT).show();
+                }
+            });
+        }
+        if (et_type.getText().toString().equals("DUO")){
+            Map<String, Object> DuoMatch = new MapList(newName,newMap,newMode,newDate,newTime,newPrizeMoney,newEntryFee,newMoneyBreakUp,newType).newMatch();
+            firestoreDB.collection("Match List").document("Duo Match")
+                    .collection("Match List").add(DuoMatch)
+                    .addOnSuccessListener(new OnSuccessListener<DocumentReference>() {
+                        @Override
+                        public void onSuccess(DocumentReference documentReference) {
+                            Toast.makeText(AdminAddMatch.this, "Match has been Added", Toast.LENGTH_SHORT).show();
+                        }
+                    }).addOnFailureListener(new OnFailureListener() {
+                @Override
+                public void onFailure(@NonNull Exception e) {
+                    Toast.makeText(AdminAddMatch.this, "Match adding Failed", Toast.LENGTH_SHORT).show();
+                }
+            });
+        }
+        if (et_type.getText().toString().equals("SQUAD")){
+            Map<String, Object> SquadMatch = new MapList(newName,newMap,newMode,newDate,newTime,newPrizeMoney,newEntryFee,newMoneyBreakUp,newType).newMatch();
+            firestoreDB.collection("Match List").document("Solo Match")
+                    .collection("Match List").add(SquadMatch)
+                    .addOnSuccessListener(new OnSuccessListener<DocumentReference>() {
+                        @Override
+                        public void onSuccess(DocumentReference documentReference) {
+                            Toast.makeText(AdminAddMatch.this, "Match has been Added", Toast.LENGTH_SHORT).show();
+                        }
+                    }).addOnFailureListener(new OnFailureListener() {
+                @Override
+                public void onFailure(@NonNull Exception e) {
+                    Toast.makeText(AdminAddMatch.this, "Match adding Failed", Toast.LENGTH_SHORT).show();
+                }
+            });
+        }
+
         new Handler().postDelayed(new Runnable() {
             @Override
             public void run() {
@@ -322,6 +374,7 @@ public class AdminAddMatch extends AppCompatActivity {
             }
         });
 
+
     }
 
     protected void onDestroy() {
@@ -329,6 +382,5 @@ public class AdminAddMatch extends AppCompatActivity {
 
         firestoreListener.remove();
     }
-
 
 }
