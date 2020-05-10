@@ -3,6 +3,7 @@ package com.slotbooker.Registration;
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.text.TextUtils;
 import android.view.View;
@@ -20,6 +21,7 @@ import com.google.firebase.firestore.CollectionReference;
 import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.slotbooker.R;
+import com.slotbooker.Payment.RazorPay.RazorPay;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -100,6 +102,7 @@ public class Squad extends AppCompatActivity implements AdapterView.OnItemSelect
                         Toast.makeText(Squad.this, "\t\tComplete Payment to \n confirm your participation",
                                 Toast.LENGTH_SHORT).show();
                         progressBar.setVisibility(View.INVISIBLE);
+                        startActivity(new Intent(Squad.this, RazorPay.class));
                     }
                 });
 

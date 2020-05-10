@@ -5,6 +5,9 @@
 
     <uses-permission android:name="android.permission.INTERNET" />
     <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
+    <uses-permission android:name="android.permission.READ_SMS" />
+    <uses-permission android:name="android.permission.RECEIVE_SMS" />
+    <uses-permission android:name="android.permission.ACCESS_WIFI_STATE" />
 
     <application
         android:name=".Util.BookAPI"
@@ -15,6 +18,9 @@
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
         <!-- [START fcm_disable_auto_init] -->
+        <meta-data
+            android:name="com.razorpay.ApiKey"
+            android:value="rzp_test_sveeJOH5WzkLWY" />
         <meta-data
             android:name="firebase_messaging_auto_init_enabled"
             android:value="false" />
@@ -28,34 +34,42 @@
             android:name="com.google.firebase.messaging.default_notification_color"
             android:resource="@color/colorAccent" />
 
-        <activity android:name=".Adapter.Model.AdminAddMatchDetail" android:parentActivityName=".UI.AdminAddMatch"/>
-
         <activity
-            android:name=".Registration.Squad" android:parentActivityName=".Main2Activity" />
+            android:name=".Adapter.Model.AdminAddMatchDetail"
+            android:parentActivityName=".UI.AdminAddMatch" />
         <activity
-            android:name=".Registration.Duo" android:parentActivityName=".Main2Activity" />
+            android:name=".Registration.Duo"
+            android:parentActivityName=".Main2Activity" />
         <activity android:name=".Login.SignUpActivity" />
         <activity android:name=".Login.LoginActivity" />
         <activity
-            android:name=".Registration.Solo" android:parentActivityName=".Main2Activity" />
+            android:name=".Registration.Solo"
+            android:parentActivityName=".Main2Activity" />
         <activity android:name=".UI.SoloMapSelector" />
         <activity android:name=".UI.DuoMapSelector" />
         <activity android:name=".UI.SquadMapSelector" />
-
         <activity android:name=".Main3Activity" />
         <activity android:name=".MainActivity" />
         <activity android:name=".Admin.Admin" />
         <activity
             android:name=".UI.AdminAddMatch"
             android:label="@string/title_activity_admin_add_match"
-            android:theme="@style/AppTheme.NoActionBar"/>
-        <activity android:name=".Main2Activity" >
-        <intent-filter>
+            android:theme="@style/AppTheme.NoActionBar" />
+        <activity android:name=".Main2Activity" />
+        <activity
+            android:name=".Registration.Squad"
+            android:parentActivityName=".Main2Activity" />
+        <activity android:name=".Payment.RazorPay.RazorPay">
+            <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
+        <activity
+            android:name="com.paytm.pgsdk.PaytmPGActivity"
+            android:configChanges="keyboardHidden|orientation|keyboard"
+            android:screenOrientation="fullSensor" />
 
         <service
             android:name=".Messaging.MessagingService"
