@@ -22,7 +22,6 @@
             android:layout_height="5dp"
             style="?android:attr/progressBarStyleHorizontal"
             android:indeterminate="true"
-            android:layout_below="@id/iv_prof"
             android:visibility="gone"
             />
 
@@ -32,14 +31,15 @@
             android:layout_height="50dp"
             android:layout_centerHorizontal="true"
             android:layout_marginBottom="5dp"
+            android:layout_below="@id/prof_progressBar"
              />
 
         <Button
             android:id="@+id/btn_prof_edit"
             android:layout_width="30dp"
             android:layout_height="30dp"
+            android:layout_alignBottom="@+id/iv_prof"
             android:layout_alignParentEnd="true"
-            android:layout_alignParentTop="true"
             android:background="@drawable/ic_edit_black_36dp" /></RelativeLayout>
     <RelativeLayout
         android:layout_width="match_parent"

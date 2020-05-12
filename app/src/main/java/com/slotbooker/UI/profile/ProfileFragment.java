@@ -86,9 +86,6 @@ public class ProfileFragment extends Fragment {
 
         //set user details
 
-
-
-
         ProfileViewModel.getText().observe(getViewLifecycleOwner(), new Observer<String>() {
             @Override
             public void onChanged(@Nullable String s) {
@@ -99,13 +96,14 @@ public class ProfileFragment extends Fragment {
                     public void onClick(View v) {
                         //setting fields editable on button click and display save button
                         editDetails();
+                        btn_prof_edit.setVisibility(View.INVISIBLE);
                     }
                 });
 
                 btn_prof_save.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
-
+                        btn_prof_edit.setVisibility(View.VISIBLE);
                         //UPDATE & save to db
                         saveDetails();
                         refreshDetails();
