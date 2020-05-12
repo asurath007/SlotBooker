@@ -100,7 +100,7 @@ public class AdminAddMatchDetail extends AppCompatActivity {
             prizeMoney.setText(bundle.getString("UPrizeMoney"));
             entryFee.setText(bundle.getString("UEntryFee"));
         }
-
+            Log.d("adminAddDetails","Id:"+id);
         btn_edit.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {

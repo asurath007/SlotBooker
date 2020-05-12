@@ -92,21 +92,17 @@ public class SignUpActivity extends AppCompatActivity {
                     createUserEmailAccount(email,password,username);
 
                     //hide keyboard
-                    InputMethodManager inputManager = (InputMethodManager)
-                            getSystemService(Context.INPUT_METHOD_SERVICE);
-
-                    assert inputManager != null;
-                    inputManager.hideSoftInputFromWindow(Objects.requireNonNull(getCurrentFocus()).getWindowToken(),
-                            InputMethodManager.HIDE_NOT_ALWAYS);
-
+//                    InputMethodManager inputManager = (InputMethodManager)
+//                            getSystemService(Context.INPUT_METHOD_SERVICE);
+//                    assert inputManager != null;
+//                    inputManager.hideSoftInputFromWindow(Objects.requireNonNull(getCurrentFocus()).getWindowToken(),
+//                            InputMethodManager.HIDE_NOT_ALWAYS);
                 }else {
                     Toast.makeText(SignUpActivity.this, "Empty fields not allowed",
                             Toast.LENGTH_LONG).show();
                 }
-
             }
         });
-
     }
     private  void createUserEmailAccount(final String email, String password, final String username){
         if (TextUtils.isEmpty(email)){Toast.makeText(SignUpActivity.this, "Please enter a valid email", Toast.LENGTH_SHORT).show();}
@@ -146,7 +142,6 @@ public class SignUpActivity extends AppCompatActivity {
 
                                                             String name = task.getResult().getString("userName");
 
-
                                                             BookAPI api = BookAPI.getInstance();
                                                             api.setUsername(name);
                                                             api.setUserId(currentUserId);
@@ -157,10 +152,8 @@ public class SignUpActivity extends AppCompatActivity {
                                                             intent.putExtra("userId", currentUserId);
                                                             intent.putExtra("userEmail",email);
                                                             startActivity(intent);
-
                                                         }else {
                                                             signUp_progressBar.setVisibility(View.INVISIBLE);
-
                                                         }
                                                     }
                                                 });
@@ -172,6 +165,8 @@ public class SignUpActivity extends AppCompatActivity {
                                                 Toast.makeText(SignUpActivity.this, "User registration failed",
                                                         Toast.LENGTH_SHORT).show();
 
+                                                signUp_progressBar.setVisibility(View.INVISIBLE);
+
                                             }
                                         });
                                 //verification e-mail
@@ -179,9 +174,9 @@ public class SignUpActivity extends AppCompatActivity {
                                     @Override
                                     public void onComplete(@NonNull Task<Void> task) {
                                         if (task.isSuccessful()){
-                                            Toast.makeText(SignUpActivity.this, "\t\t\t\t\t\tRegistered Successfully \n Please verify your email to continue",
+                                            Toast.makeText(SignUpActivity.this, "\t\t\t\tRegistered Successfully \n Please verify your email to continue",
                                                     Toast.LENGTH_SHORT).show();
-
+                                            signUp_progressBar.setVisibility(View.INVISIBLE);
                                         }
                                     }
                                 }).addOnFailureListener(new OnFailureListener() {
@@ -189,14 +184,12 @@ public class SignUpActivity extends AppCompatActivity {
                                     public void onFailure(@NonNull Exception e) {
                                         Toast.makeText(SignUpActivity.this, "User registration failed",
                                                 Toast.LENGTH_SHORT).show();
+                                        signUp_progressBar.setVisibility(View.INVISIBLE);
                                     }
                                 });
-
                             }else{
                                 //something went wrong
                             }
-
-
                         }
                     })
                     .addOnFailureListener(new OnFailureListener() {
@@ -204,10 +197,9 @@ public class SignUpActivity extends AppCompatActivity {
                         public void onFailure(@NonNull Exception e) {
                             Toast.makeText(SignUpActivity.this, "SignUp failed",
                                     Toast.LENGTH_LONG).show();
-
+                            signUp_progressBar.setVisibility(View.INVISIBLE);
                         }
                     });
-
         }
     }
 

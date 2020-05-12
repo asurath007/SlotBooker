@@ -74,5 +74,10 @@
 
     <string name="hello_first_fragment">Hello first fragment</string>
     <string name="hello_second_fragment">Hello second fragment. Arg: %1$s</string>
+    <string name="home_fragment_text"><![CDATA[MyKnot Gaming brings you the most awaited custom gaming experience with 100% true Battle Royale Matches. Join us right now and drop into a match to test your skills & earn rewards.]]></string>
+    <string name="tv_home_sharing">Join us on other platforms and stay connected</string>
+    <string name="organiser_logo">Organiser Logo</string>
+    <string name="pubg">PUBG</string>
+    <string name="cod">COD</string>
 
 </resources>

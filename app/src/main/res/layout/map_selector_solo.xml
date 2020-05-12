@@ -13,11 +13,11 @@
     <ImageView
         android:id="@+id/imageView"
         android:layout_width="300dp"
-        android:layout_height="100dp"
+        android:layout_height="150dp"
         android:layout_gravity="center"
         android:layout_margin="20dp"
         android:layout_marginBottom="10dp"
-        android:src="@drawable/app_icon_white"
+        android:src="@drawable/myknot_gaming_logo"
         android:contentDescription="App Logo" />
 
     <androidx.recyclerview.widget.RecyclerView

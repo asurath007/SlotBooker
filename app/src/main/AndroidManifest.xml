@@ -49,7 +49,7 @@
         <activity android:name=".UI.DuoMapSelector" />
         <activity android:name=".UI.SquadMapSelector" />
         <activity android:name=".Main3Activity" />
-        <activity android:name=".MainActivity" />
+
         <activity android:name=".Admin.Admin" />
         <activity
             android:name=".UI.AdminAddMatch"
@@ -59,7 +59,8 @@
         <activity
             android:name=".Registration.Squad"
             android:parentActivityName=".Main2Activity" />
-        <activity android:name=".Payment.RazorPay.RazorPay">
+        <activity android:name=".Payment.RazorPay.RazorPay_Activity"/>
+            <activity android:name=".MainActivity" >
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 

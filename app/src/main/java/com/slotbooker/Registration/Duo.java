@@ -3,8 +3,10 @@ package com.slotbooker.Registration;
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 
+import android.app.Activity;
 import android.os.Bundle;
 import android.text.TextUtils;
+import android.util.Log;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
@@ -19,12 +21,16 @@ import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.firebase.firestore.CollectionReference;
 import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.FirebaseFirestore;
+import com.razorpay.Checkout;
+import com.razorpay.PaymentResultListener;
 import com.slotbooker.R;
+
+import org.json.JSONObject;
 
 import java.util.HashMap;
 import java.util.Map;
 
-public class Duo extends AppCompatActivity implements AdapterView.OnItemSelectedListener {
+public class Duo extends AppCompatActivity implements AdapterView.OnItemSelectedListener, PaymentResultListener {
 
 
     private EditText et_duo_name;
@@ -91,6 +97,7 @@ public class Duo extends AppCompatActivity implements AdapterView.OnItemSelected
                     public void onSuccess(DocumentReference documentReference) {
                         Toast.makeText(Duo.this, "\t\tComplete Payment to \n confirm your participation",
                                 Toast.LENGTH_SHORT).show();
+                        startPayment();
                         progressBar.setVisibility(View.INVISIBLE);
                     }
                 });
@@ -117,5 +124,54 @@ public class Duo extends AppCompatActivity implements AdapterView.OnItemSelected
     @Override
     public void onNothingSelected(AdapterView<?> parent) {
 
+    }
+    public void startPayment() {
+        /**
+         * You need to pass current activity in order to let Razorpay create CheckoutActivity
+         */
+        final Activity activity = this;
+
+        final Checkout co = new Checkout();
+
+        try {
+            JSONObject options = new JSONObject();
+            options.put("name", "MyKnot Gaming");
+            options.put("description", "Registration Fee");
+            //You can omit the image option to fetch the image from dashboard
+//            options.put("image", "https://s3.amazonaws.com/rzp-mobile/images/rzp.png");
+            options.put("currency", "INR");
+
+//            String payment = editTextPayment.getText().toString();
+            String payment = "10";
+            double total = Double.parseDouble(payment);
+            total = total * 100;
+            options.put("amount", total);
+
+            JSONObject preFill = new JSONObject();
+//            preFill.put("email", "axe.nexas@gmail.com");
+//            preFill.put("contact", "9853837232");
+//
+//            options.put("prefill", preFill);
+
+            co.open(activity, options);
+        } catch (Exception e) {
+            Toast.makeText(activity, "Error in payment: " + e.getMessage(), Toast.LENGTH_SHORT).show();
+            e.printStackTrace();
+        }
+    }
+    @Override
+    public void onPaymentSuccess(String razorpayPaymentID) {
+//        Toast.makeText(this, "Payment successfully done! " + razorpayPaymentID, Toast.LENGTH_SHORT).show();
+        Toast.makeText(this, "Payment successfully done! ", Toast.LENGTH_SHORT).show();
+
+    }
+
+    @Override
+    public void onPaymentError(int code, String response) {
+        try {
+            Toast.makeText(this, "Payment error please try again", Toast.LENGTH_SHORT).show();
+        } catch (Exception e) {
+            Log.e("OnPaymentError", "Exception in onPaymentError", e);
+        }
     }
 }

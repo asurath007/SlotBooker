@@ -6,20 +6,17 @@ import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
-import android.widget.LinearLayout;
 import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.coordinatorlayout.widget.CoordinatorLayout;
 
-import com.google.android.material.snackbar.Snackbar;
 import com.razorpay.Checkout;
 import com.razorpay.PaymentResultListener;
 import com.slotbooker.R;
 
 import org.json.JSONObject;
 
-public class RazorPay extends AppCompatActivity implements PaymentResultListener {
+public class RazorPay_Activity extends AppCompatActivity implements PaymentResultListener {
 
     private static final String TAG = "RazorPay" ;
     private Button buttonConfirmOrder;
@@ -119,7 +116,7 @@ public class RazorPay extends AppCompatActivity implements PaymentResultListener
             public void onClick(View view) {
                 if(editTextPayment.getText().toString().equals(""))
                 {
-                    Toast.makeText(RazorPay.this, "Please fill payment", Toast.LENGTH_LONG).show();
+                    Toast.makeText(RazorPay_Activity.this, "Please fill payment", Toast.LENGTH_LONG).show();
                     return;
                 }
                 startPayment();

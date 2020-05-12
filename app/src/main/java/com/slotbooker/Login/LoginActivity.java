@@ -153,12 +153,12 @@ public class LoginActivity extends AppCompatActivity {
                         login_password.getText().toString().trim());
 
                 //hide keyboard
-                InputMethodManager inputManager = (InputMethodManager)
-                        getSystemService(Context.INPUT_METHOD_SERVICE);
-
-                assert inputManager != null;
-                inputManager.hideSoftInputFromWindow(Objects.requireNonNull(getCurrentFocus()).getWindowToken(),
-                        InputMethodManager.HIDE_NOT_ALWAYS);
+//                InputMethodManager inputManager = (InputMethodManager)
+//                        getSystemService(Context.INPUT_METHOD_SERVICE);
+//
+//                assert inputManager != null;
+//                inputManager.hideSoftInputFromWindow(Objects.requireNonNull(getCurrentFocus()).getWindowToken(),
+//                        InputMethodManager.HIDE_NOT_ALWAYS);
 
                 sp.edit().putBoolean("logged",true).apply();
                 //add logout option
@@ -230,6 +230,7 @@ public class LoginActivity extends AppCompatActivity {
                     //next activity
                     startActivity(new Intent(LoginActivity.this, Main3Activity.class));
                     finish();
+                    login_progressBar.setVisibility(View.INVISIBLE);
                 }
             })
                     .addOnFailureListener(new OnFailureListener() {
@@ -237,6 +238,8 @@ public class LoginActivity extends AppCompatActivity {
                 public void onFailure(@NonNull Exception e) {
                     Toast.makeText(LoginActivity.this, "User not found",
                             Toast.LENGTH_LONG).show();
+
+                    login_progressBar.setVisibility(View.INVISIBLE);
 
                 }
             });
