@@ -85,6 +85,7 @@ public class Duo extends AppCompatActivity implements AdapterView.OnItemSelected
                 player.put("player1",player1);
                 player.put("player2",player2);
                 player.put("slotBooked",slot);
+                player.put("payment", "");
 
                 collectionReference.add(player).addOnFailureListener(new OnFailureListener() {
                     @Override
@@ -95,6 +96,8 @@ public class Duo extends AppCompatActivity implements AdapterView.OnItemSelected
                 }).addOnSuccessListener(new OnSuccessListener<DocumentReference>() {
                     @Override
                     public void onSuccess(DocumentReference documentReference) {
+                        String id = documentReference.getId();
+                        Log.d("Duo","ID: "+id);
                         Toast.makeText(Duo.this, "\t\tComplete Payment to \n confirm your participation",
                                 Toast.LENGTH_SHORT).show();
                         startPayment();

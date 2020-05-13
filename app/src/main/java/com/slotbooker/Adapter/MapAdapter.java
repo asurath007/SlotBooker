@@ -113,10 +113,12 @@ public class MapAdapter extends RecyclerView.Adapter<MapAdapter.ViewHolder> {
                     Intent intentDuo = new Intent(context, Duo.class);
                     intentDuo.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
                     context.startActivity(intentDuo);
+                    break;
                 case "SQUAD":
                     Intent intentSquad = new Intent(context, Squad.class);
                     intentSquad.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
                     context.startActivity(intentSquad);
+                    break;
             }
 
         }
