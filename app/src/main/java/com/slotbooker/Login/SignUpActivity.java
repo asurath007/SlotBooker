@@ -5,8 +5,10 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.text.TextUtils;
+import android.util.Log;
 import android.view.View;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.Button;
@@ -28,6 +30,7 @@ import com.google.firebase.firestore.FirebaseFirestore;
 import com.slotbooker.Main2Activity;
 import com.slotbooker.R;
 import com.slotbooker.Util.BookAPI;
+import com.slotbooker.Util.UserDetail;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -124,16 +127,21 @@ public class SignUpActivity extends AppCompatActivity {
                                 final String currentUserId = currentUser.getUid();
 
                                 //map to create collection in db
-                                Map<String , String> userObj = new HashMap<>();
-                                userObj.put("userId",currentUserId);
-                                userObj.put("userName", username);
-                                userObj.put("userEmail",email);
+//                                Map<String , String> userObj = new HashMap<>();
+//                                userObj.put("userId",currentUserId);
+//                                userObj.put("userName", username);
+//                                userObj.put("userEmail",email);
+                                UserDetail userObj = new UserDetail();
+                                userObj.setEmail(email);
+                                userObj.setUserName(username);
+                                userObj.setId(currentUserId);
+                                Map<String,Object> User = new UserDetail( email, username,currentUserId).newUser();
 
                                 //save to db
-                                collectionReference.add(userObj)
+                                collectionReference.add(User)
                                         .addOnSuccessListener(new OnSuccessListener<DocumentReference>() {
                                             @Override
-                                            public void onSuccess(DocumentReference documentReference) {
+                                            public void onSuccess(final DocumentReference documentReference) {
                                                 documentReference.get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
                                                     @Override
                                                     public void onComplete(@NonNull Task<DocumentSnapshot> task) {
@@ -141,11 +149,18 @@ public class SignUpActivity extends AppCompatActivity {
                                                             signUp_progressBar.setVisibility(View.INVISIBLE);
 
                                                             String name = task.getResult().getString("userName");
+                                                            String id = (documentReference.getId());
+                                                            Log.d("TASK","ID:"+id);
+                                                            //passing doc id
+                                                            SharedPreferences sharedPref = getSharedPreferences("myKey", MODE_PRIVATE);
+                                                            SharedPreferences.Editor editor = sharedPref.edit();
+                                                            editor.putString("value", id);
+                                                            editor.apply();
 
-                                                            BookAPI api = BookAPI.getInstance();
-                                                            api.setUsername(name);
-                                                            api.setUserId(currentUserId);
-                                                            api.setUserEmail(email);
+                                                            UserDetail ud = UserDetail.getInstance();
+                                                            ud.setUserName(name);
+                                                            ud.setEmail(email);
+                                                            ud.setId((documentReference.getId()));
 
                                                             Intent intent = new Intent(SignUpActivity.this, LoginActivity.class);
                                                             intent.putExtra("userName", name);
@@ -195,7 +210,7 @@ public class SignUpActivity extends AppCompatActivity {
                     .addOnFailureListener(new OnFailureListener() {
                         @Override
                         public void onFailure(@NonNull Exception e) {
-                            Toast.makeText(SignUpActivity.this, "SignUp failed",
+                            Toast.makeText(SignUpActivity.this, "SignUp failed\nAccount already exists",
                                     Toast.LENGTH_LONG).show();
                             signUp_progressBar.setVisibility(View.INVISIBLE);
                         }

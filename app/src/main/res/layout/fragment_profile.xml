@@ -76,10 +76,10 @@
                     android:textSize="16sp"
                     />
                 <EditText
-                    android:layout_below="@id/ptv1"
                     android:id="@+id/prof_first_name"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
+                    android:layout_below="@id/ptv1"
                     android:hint="First Name"
                     android:textColor="@color/colorTextPrimary"
                     android:textSize="14sp"
@@ -282,7 +282,8 @@
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:layout_margin="5dp"
-            android:orientation="vertical">
+            android:orientation="vertical"
+            android:visibility="gone">
 
             <TextView
                 android:id="@+id/ptv7"

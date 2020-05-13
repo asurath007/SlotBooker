@@ -303,7 +303,7 @@ public class AdminAddMatchDetail extends AppCompatActivity {
 //        int newProgress = match_status.getProgress();
 
         Map<String, Object> updateMatch = new MapList(newName, newMap, newMode, newDate, newTime, newPrizeMoney, newEntryFee, newMoneyBreakUp, newType).newMatch();
-
+        Log.d("ADMIN","ID:" + id);
         matchRef.document(id).set(updateMatch)
                 .addOnSuccessListener(new OnSuccessListener<Void>() {
                     @Override
