@@ -45,9 +45,9 @@
         <activity
             android:name=".Registration.Solo"
             android:parentActivityName=".Main2Activity" />
-        <activity android:name=".UI.SoloMapSelector" />
-        <activity android:name=".UI.DuoMapSelector" />
-        <activity android:name=".UI.SquadMapSelector" />
+        <activity android:name=".UI.SoloMapSelector" android:parentActivityName=".Main2Activity"/>
+        <activity android:name=".UI.DuoMapSelector" android:parentActivityName=".Main2Activity"/>
+        <activity android:name=".UI.SquadMapSelector" android:parentActivityName=".Main2Activity"/>
         <activity android:name=".HomeActivity" />
         <activity android:name=".Admin.Admin" />
         <activity

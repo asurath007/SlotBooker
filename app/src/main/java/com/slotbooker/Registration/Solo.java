@@ -13,6 +13,7 @@ import android.widget.EditText;
 import android.widget.ProgressBar;
 import android.widget.SeekBar;
 import android.widget.Spinner;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
@@ -50,10 +51,14 @@ public class Solo extends AppCompatActivity implements AdapterView.OnItemSelecte
     private EditText et_solo;
     private Button btn_submit;
     private Spinner spinner_solo;
-    private ProgressBar progressBar;
-    private ProgressBar statusBar;
+    private ProgressBar progressBar,statusBar;
+
     private FirebaseAuth firebaseAuth;
     private FirebaseAuth.AuthStateListener authStateListener;
+
+    private TextView name,map,mode,date,time,type;
+    private TextView prizeMoney,moneyBreakUp,entryFee;
+    String id = "",paymentStatus="-",player1,slot;
 
     private FirebaseFirestore db = FirebaseFirestore.getInstance();
     private CollectionReference collectionReference = db.collection("Solo Registration");
@@ -65,11 +70,20 @@ public class Solo extends AppCompatActivity implements AdapterView.OnItemSelecte
 
         firebaseAuth = FirebaseAuth.getInstance();
 
+        name = findViewById(R.id.tv_solo_match_title);
+        map =findViewById(R.id.tv_solo_map);
+        mode= findViewById(R.id.tv_solo_mode);
+        date= findViewById(R.id.tv_solo_date);
+        time= findViewById(R.id.tv_solo_time);
+        prizeMoney= findViewById(R.id.tv_solo_prizeMoney);
+        moneyBreakUp = findViewById(R.id.tv_solo_moneyBreakUp);
+        entryFee=findViewById(R.id.tv_solo_entryFee);
+        statusBar = findViewById(R.id.solo_match_status);
+
         et_solo = findViewById(R.id.et_solo);
         btn_submit = findViewById(R.id.btn_solo_submit);
         spinner_solo = findViewById(R.id.spinner_solo);
         progressBar = findViewById(R.id.solo_progressBar);
-        statusBar = findViewById(R.id.progressbar_solo);
 
 
         //Slot Booking dropdown
@@ -79,6 +93,19 @@ public class Solo extends AppCompatActivity implements AdapterView.OnItemSelecte
         spinner_solo.setAdapter(adapter);
 
         spinner_solo.setOnItemSelectedListener(this);
+
+        Bundle bundle = getIntent().getExtras();
+        if (bundle != null){
+            name.setText(bundle.getString("name"));
+            map.setText(bundle.getString("map"));
+            mode.setText(bundle.getString("mode"));
+            date.setText(bundle.getString("date"));
+            time.setText(bundle.getString("time"));
+            entryFee.setText(bundle.getString("ef"));
+            prizeMoney.setText(bundle.getString("pm"));
+            moneyBreakUp.setText(bundle.getString("mbu"));
+            Log.d("mapID","map:"+bundle.getString("map"));
+        }
 
         btn_submit.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -94,6 +121,7 @@ public class Solo extends AppCompatActivity implements AdapterView.OnItemSelecte
                     Map<String, Object> player = new HashMap<>();
                     player.put("player1", player1);
                     player.put("slotBooked", slotBooked);
+                    player.put("payment",paymentStatus);
 
                     collectionReference.add(player).addOnFailureListener(new OnFailureListener() {
                         @Override
@@ -104,6 +132,7 @@ public class Solo extends AppCompatActivity implements AdapterView.OnItemSelecte
                     }).addOnSuccessListener(new OnSuccessListener<DocumentReference>() {
                         @Override
                         public void onSuccess(DocumentReference documentReference) {
+                            id = documentReference.getId();
                             Toast.makeText(Solo.this, "\t\tComplete Payment to \n confirm your participation",
                                     Toast.LENGTH_SHORT).show();
                             startPayment();
@@ -118,9 +147,6 @@ public class Solo extends AppCompatActivity implements AdapterView.OnItemSelecte
 
     });
 
-//        Bundle gotKeeper = getIntent().getExtras();
-//        score = gotKeeper.getInt("key");
-
         //set progress bar
         collectionReference.get().addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
             @Override
@@ -130,7 +156,8 @@ public class Solo extends AppCompatActivity implements AdapterView.OnItemSelecte
                     if (count<100){
                     for (DocumentSnapshot snapshot : Objects.requireNonNull(task.getResult())) {
                         count=count+1;
-                    }Toast.makeText(Solo.this, "Participants joined= "+count,Toast.LENGTH_SHORT).show();
+                    }
+//                    Toast.makeText(Solo.this, "Participants joined= "+count,Toast.LENGTH_SHORT).show();
                         statusBar.setProgress(count);
                     }else{
                         Toast.makeText(Solo.this,"Slot Filled",Toast.LENGTH_SHORT).show();
@@ -143,8 +170,6 @@ public class Solo extends AppCompatActivity implements AdapterView.OnItemSelecte
 
     }
 
-
-
     @Override
     public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
         String item = parent.getItemAtPosition(position).toString();
@@ -152,19 +177,15 @@ public class Solo extends AppCompatActivity implements AdapterView.OnItemSelecte
 
         // Showing selected spinner item
 //        Toast.makeText(parent.getContext(), "Selected: " + item, Toast.LENGTH_LONG).show();
-
     }
 
     @Override
     public void onNothingSelected(AdapterView<?> parent) {
-
     }
-    public void startPayment() {
-        /**
-         * You need to pass current activity in order to let Razorpay create CheckoutActivity
-         */
-        final Activity activity = this;
 
+    public void startPayment() {
+
+        final Activity activity = this;
         final Checkout co = new Checkout();
 
         try {
@@ -175,8 +196,7 @@ public class Solo extends AppCompatActivity implements AdapterView.OnItemSelecte
 //            options.put("image", "https://s3.amazonaws.com/rzp-mobile/images/rzp.png");
             options.put("currency", "INR");
 
-//            String payment = editTextPayment.getText().toString();
-            String payment = "10";
+            String payment = entryFee.getText().toString();
             double total = Double.parseDouble(payment);
             total = total * 100;
             options.put("amount", total);
@@ -184,9 +204,7 @@ public class Solo extends AppCompatActivity implements AdapterView.OnItemSelecte
             JSONObject preFill = new JSONObject();
 //            preFill.put("email", "axe.nexas@gmail.com");
 //            preFill.put("contact", "9853837232");
-//
 //            options.put("prefill", preFill);
-
             co.open(activity, options);
         } catch (Exception e) {
             Toast.makeText(activity, "Error in payment: " + e.getMessage(), Toast.LENGTH_SHORT).show();
@@ -198,6 +216,23 @@ public class Solo extends AppCompatActivity implements AdapterView.OnItemSelecte
 //        Toast.makeText(this, "Payment successfully done! " + razorpayPaymentID, Toast.LENGTH_SHORT).show();
         Toast.makeText(this, "Payment successfully done! ", Toast.LENGTH_SHORT).show();
 
+        //change status in DB
+        Map<String, Object> team = new HashMap<>();
+
+        team.put("player1",player1);
+        team.put("slotBooked",slot);
+        team.put("payment", "paid");
+        collectionReference.document(id).set(team)
+                .addOnCompleteListener(new OnCompleteListener<Void>() {
+                    @Override
+                    public void onComplete(@NonNull Task<Void> task) {
+                    }
+                }).addOnFailureListener(new OnFailureListener() {
+            @Override
+            public void onFailure(@NonNull Exception e) {
+                Toast.makeText(Solo.this, "Updating Payment Status failed\nPlease check after sometime", Toast.LENGTH_LONG).show();
+            }
+        });
     }
 
     @Override

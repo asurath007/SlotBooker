@@ -99,7 +99,6 @@ public class MapAdapter extends RecyclerView.Adapter<MapAdapter.ViewHolder> {
         public void onClick(View v) {
 
             int position = getAdapterPosition();
-
             MapList list = mapList.get(position);
 
             //get to registration page
@@ -107,16 +106,40 @@ public class MapAdapter extends RecyclerView.Adapter<MapAdapter.ViewHolder> {
                 case "SOLO":
                     Intent intentSolo = new Intent(context, Solo.class);
                     intentSolo.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+                    intentSolo.putExtra("name",list.getName());
+                    intentSolo.putExtra("map",list.getMap());
+                    intentSolo.putExtra("date",list.getDate());
+                    intentSolo.putExtra("time",list.getTime());
+                    intentSolo.putExtra("pm",list.getPrizeMoney());
+                    intentSolo.putExtra("ef",list.getEntryFee());
+                    intentSolo.putExtra("mbu",list.getMoneyBreakUp());
+                    intentSolo.putExtra("mode",list.getMode());
                     context.startActivity(intentSolo);
                     break;
                 case "DUO":
                     Intent intentDuo = new Intent(context, Duo.class);
                     intentDuo.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+                    intentDuo.putExtra("mode",list.getMode());
+                    intentDuo.putExtra("name",list.getName());
+                    intentDuo.putExtra("map",list.getMap());
+                    intentDuo.putExtra("date",list.getDate());
+                    intentDuo.putExtra("time",list.getTime());
+                    intentDuo.putExtra("pm",list.getPrizeMoney());
+                    intentDuo.putExtra("ef",list.getEntryFee());
+                    intentDuo.putExtra("mbu",list.getMoneyBreakUp());
                     context.startActivity(intentDuo);
                     break;
                 case "SQUAD":
                     Intent intentSquad = new Intent(context, Squad.class);
                     intentSquad.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+                    intentSquad.putExtra("mode",list.getMode());
+                    intentSquad.putExtra("name",list.getName());
+                    intentSquad.putExtra("map",list.getMap());
+                    intentSquad.putExtra("date",list.getDate());
+                    intentSquad.putExtra("time",list.getTime());
+                    intentSquad.putExtra("pm",list.getPrizeMoney());
+                    intentSquad.putExtra("ef",list.getEntryFee());
+                    intentSquad.putExtra("mbu",list.getMoneyBreakUp());
                     context.startActivity(intentSquad);
                     break;
             }
