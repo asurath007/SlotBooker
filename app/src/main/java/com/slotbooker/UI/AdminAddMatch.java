@@ -272,7 +272,7 @@ public class AdminAddMatch extends AppCompatActivity {
         newMatch.setId(newId);  //passing doc id as id to retrieve in user side
 
         //save to db
-        Map<String, Object> Match = new MapList(newName,newMap,newMode,newDate,newTime,newPrizeMoney,newEntryFee,newMoneyBreakUp,newType).newMatch();
+        Map<String, Object> Match = new MapList(newName,newMap,newMode,newDate,newTime,newPrizeMoney,newEntryFee,newMoneyBreakUp,newType,newId).newMatch();
 
         firestoreDB.collection("Match List").add(Match)
                 .addOnSuccessListener(new OnSuccessListener<DocumentReference>() {
@@ -280,7 +280,7 @@ public class AdminAddMatch extends AppCompatActivity {
                     public void onSuccess(DocumentReference documentReference) {
                         Toast.makeText(AdminAddMatch.this, "Match has been Added", Toast.LENGTH_SHORT).show();
                         id= documentReference.getId();
-                        Log.d("Admin","ID:"+id);
+                        Log.d("AdminID","ID:"+id);
                     }
                 }).addOnFailureListener(new OnFailureListener() {
             @Override
@@ -288,6 +288,10 @@ public class AdminAddMatch extends AppCompatActivity {
                 Toast.makeText(AdminAddMatch.this, "Match adding Failed", Toast.LENGTH_SHORT).show();
             }
         });
+
+        //update id
+//        firestoreDB.collection("Match List").document(id).update(Match);
+
 
         Snackbar.make(v,"Match Details Saved", Snackbar.LENGTH_SHORT).show();
 

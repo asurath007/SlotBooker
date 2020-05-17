@@ -152,7 +152,7 @@ public class SignUpActivity extends AppCompatActivity {
                                                             String id = (documentReference.getId());
                                                             Log.d("TASK","ID:"+id);
                                                             //passing doc id
-                                                            SharedPreferences sharedPref = getSharedPreferences("myKey", MODE_PRIVATE);
+                                                            SharedPreferences sharedPref = getSharedPreferences("signupKey", MODE_PRIVATE);
                                                             SharedPreferences.Editor editor = sharedPref.edit();
                                                             editor.putString("value", id);
                                                             editor.apply();

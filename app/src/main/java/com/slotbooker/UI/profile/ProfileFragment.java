@@ -34,6 +34,7 @@ import com.google.firebase.firestore.CollectionReference;
 import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
+import com.google.firebase.firestore.QueryDocumentSnapshot;
 import com.google.firebase.firestore.QuerySnapshot;
 import com.slotbooker.Login.LoginActivity;
 import com.slotbooker.R;
@@ -151,6 +152,11 @@ public class ProfileFragment extends Fragment {
                         SharedPreferences sp = getContext().getSharedPreferences("login",MODE_PRIVATE);
                         sp.edit().putBoolean("logged",false).apply();
 
+                        SharedPreferences sp1 = getContext().getSharedPreferences("signupKey",MODE_PRIVATE);
+                        SharedPreferences sp2 = getContext().getSharedPreferences("loginKey",MODE_PRIVATE);
+                        sp1.edit().clear().apply();
+                        sp2.edit().clear().apply();
+
                         Intent intent = new Intent(getContext(), LoginActivity.class);
 //                        intent.putExtra("logged",false);
                         startActivity(intent);
@@ -160,31 +166,58 @@ public class ProfileFragment extends Fragment {
             }
 
             private void loadUserDetails() {
-                SharedPreferences sharedPreferences = getContext().getSharedPreferences("myKey", MODE_PRIVATE);
-                String uID = sharedPreferences.getString("value","");
-                userRef.document(uID).get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
-                    @Override
-                    public void onComplete(@NonNull Task<DocumentSnapshot> task) {
-                        if (task.isSuccessful()){
-                            DocumentSnapshot doc = task.getResult();
-                            assert doc != null;
-                            userName.setText(doc.getString("userName"));
-                            userEmail.setText(doc.getString("userEmail"));
-                            tv_fn.setText(doc.getString("FirstName"));
-                            tv_ln.setText(doc.getString("LastName"));
-                            tv_pun.setText(doc.getString("PUBG"));
-                            tv_cun.setText(doc.getString("COD"));
-                            firstName.setText(doc.getString("FirstName"));
-                            lastName.setText(doc.getString("LastName"));
-
+                SharedPreferences sharedPreferences = requireContext().getSharedPreferences("signupKey", MODE_PRIVATE);
+                String uID = sharedPreferences.getString("value", "");
+                if (uID == null) {
+                    userRef.document(uID).get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
+                        @Override
+                        public void onComplete(@NonNull Task<DocumentSnapshot> task) {
+                            if (task.isSuccessful()) {
+                                DocumentSnapshot doc = task.getResult();
+                                assert doc != null;
+                                userName.setText(doc.getString("userName"));
+                                userEmail.setText(doc.getString("userEmail"));
+                                tv_fn.setText(doc.getString("FirstName"));
+                                tv_ln.setText(doc.getString("LastName"));
+                                tv_pun.setText(doc.getString("PUBG"));
+                                tv_cun.setText(doc.getString("COD"));
+                                firstName.setText(doc.getString("FirstName"));
+                                lastName.setText(doc.getString("LastName"));
+                            }
                         }
-                    }
-                }).addOnFailureListener(new OnFailureListener() {
-                    @Override
-                    public void onFailure(@NonNull Exception e) {
-                        Toast.makeText(getContext(), "Failed getting User Data",Toast.LENGTH_LONG).show();
-                    }
-                });
+                    }).addOnFailureListener(new OnFailureListener() {
+                        @Override
+                        public void onFailure(@NonNull Exception e) {
+                            Toast.makeText(getContext(), "Failed getting User Data", Toast.LENGTH_LONG).show();
+                        }
+                    });
+                } else {
+                    SharedPreferences sharedPreferences1 = getContext().getSharedPreferences("loginKey",MODE_PRIVATE);
+                    String ID = sharedPreferences1.getString("value","");
+                    userRef.document(ID).get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
+                        @Override
+                        public void onComplete(@NonNull Task<DocumentSnapshot> task) {
+                            if (task.isSuccessful()) {
+                                DocumentSnapshot doc = task.getResult();
+                                assert doc != null;
+                                userName.setText(doc.getString("userName"));
+                                userEmail.setText(doc.getString("userEmail"));
+                                tv_fn.setText(doc.getString("FirstName"));
+                                tv_ln.setText(doc.getString("LastName"));
+                                tv_pun.setText(doc.getString("PUBG"));
+                                tv_cun.setText(doc.getString("COD"));
+                                firstName.setText(doc.getString("FirstName"));
+                                lastName.setText(doc.getString("LastName"));
+                            }
+                        }
+                    }).addOnFailureListener(new OnFailureListener() {
+                        @Override
+                        public void onFailure(@NonNull Exception e) {
+                            Toast.makeText(getContext(), "Failed getting User Data", Toast.LENGTH_LONG).show();
+                        }
+                    });
+                }
+
             }
 
             private void saveDetails() {

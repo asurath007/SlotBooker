@@ -53,6 +53,7 @@ public class UserDetail {
     public Map<String,Object> newUser(){
         HashMap<String, Object> user = new HashMap<>();
         user.put("userEmail",userEmail);
+        user.put("userId",id);
         user.put("userName",userName);
         user.put("FirstName",firstName);
         user.put("LastName",lastName);
