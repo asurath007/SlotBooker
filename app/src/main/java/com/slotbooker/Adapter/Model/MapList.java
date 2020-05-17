@@ -1,12 +1,14 @@
 package com.slotbooker.Adapter.Model;
 
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 public class MapList {
     private String name,map,mode,date,time,type,id;
     private String prizeMoney,moneyBreakUp,entryFee;
     private int progress;
+    private List<String> players;
 
     public MapList(String newName, String newMap, String newMode, String newDate, String newTime, String newPrizeMoney, String newEntryFee) {
         this.name = newName;
@@ -20,7 +22,20 @@ public class MapList {
 //        this.progress = newProgress;
         this.id= id;
     }
-
+    public MapList(String newName, String newMap, String newMode, String newDate, String newTime, String newPrizeMoney, String newEntryFee, String newMoneyBreakUp, String newType,List<String>players) {
+        this.name = newName;
+        this.map = newMap;
+        this.mode = newMode;
+        this.date = newDate;
+        this.time = newTime;
+        this.prizeMoney = newPrizeMoney;
+        this.moneyBreakUp = newMoneyBreakUp;
+        this.entryFee = newEntryFee;
+        this.type = newType;
+//        this.progress = newProgress;
+        this.id= id;
+        this.players=players;
+    }
     public MapList(String newName, String newMap, String newMode, String newDate, String newTime, String newPrizeMoney, String newEntryFee, String newMoneyBreakUp, String newType) {
         this.name = newName;
         this.map = newMap;
@@ -34,7 +49,19 @@ public class MapList {
 //        this.progress = newProgress;
         this.id= id;
     }
-
+    public MapList(String newName, String newMap, String newMode, String newDate, String newTime, String newPrizeMoney, String newEntryFee, String newMoneyBreakUp, String newType,String id) {
+        this.name = newName;
+        this.map = newMap;
+        this.mode = newMode;
+        this.date = newDate;
+        this.time = newTime;
+        this.prizeMoney = newPrizeMoney;
+        this.moneyBreakUp = newMoneyBreakUp;
+        this.entryFee = newEntryFee;
+        this.type = newType;
+//        this.progress = newProgress;
+        this.id= id;
+    }
     public String getId() {
         return id;
     }
@@ -150,6 +177,8 @@ public class MapList {
         match.put("entryFee",this.entryFee);
         match.put("type",this.type);
         match.put("progress",this.progress);
+        match.put("id",this.id);
+        match.put("players","");
 
         return match;
     }

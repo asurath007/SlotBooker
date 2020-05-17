@@ -269,7 +269,7 @@ public class AdminAddMatch extends AppCompatActivity {
         newMatch.setType(newType);
         newMatch.setMoneyBreakUp(newMoneyBreakUp);
 //        newMatch.setProgress(newProgress);
-        newMatch.setId(newId);
+        newMatch.setId(newId);  //passing doc id as id to retrieve in user side
 
         //save to db
         Map<String, Object> Match = new MapList(newName,newMap,newMode,newDate,newTime,newPrizeMoney,newEntryFee,newMoneyBreakUp,newType).newMatch();
@@ -279,6 +279,8 @@ public class AdminAddMatch extends AppCompatActivity {
                     @Override
                     public void onSuccess(DocumentReference documentReference) {
                         Toast.makeText(AdminAddMatch.this, "Match has been Added", Toast.LENGTH_SHORT).show();
+                        id= documentReference.getId();
+                        Log.d("Admin","ID:"+id);
                     }
                 }).addOnFailureListener(new OnFailureListener() {
             @Override

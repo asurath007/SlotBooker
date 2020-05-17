@@ -17,10 +17,13 @@
         android:roundIcon="@mipmap/ic_launcher_icon_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-        <!-- [START fcm_disable_auto_init] -->
+        <activity android:name=".AfterPayment.AFSquad"></activity>
+        <activity android:name=".AfterPayment.AFDuo" />
+        <activity android:name=".AfterPayment.AFSolo" />
+        <!-- [RazorPay API Key] -->
         <meta-data
             android:name="com.razorpay.ApiKey"
-            android:value="rzp_test_sveeJOH5WzkLWY" />
+            android:value="rzp_test_sveeJOH5WzkLWY" /> <!-- [START fcm_disable_auto_init] -->
         <meta-data
             android:name="firebase_messaging_auto_init_enabled"
             android:value="false" />
@@ -45,9 +48,15 @@
         <activity
             android:name=".Registration.Solo"
             android:parentActivityName=".Main2Activity" />
-        <activity android:name=".UI.SoloMapSelector" android:parentActivityName=".Main2Activity"/>
-        <activity android:name=".UI.DuoMapSelector" android:parentActivityName=".Main2Activity"/>
-        <activity android:name=".UI.SquadMapSelector" android:parentActivityName=".Main2Activity"/>
+        <activity
+            android:name=".UI.SoloMapSelector"
+            android:parentActivityName=".Main2Activity" />
+        <activity
+            android:name=".UI.DuoMapSelector"
+            android:parentActivityName=".Main2Activity" />
+        <activity
+            android:name=".UI.SquadMapSelector"
+            android:parentActivityName=".Main2Activity" />
         <activity android:name=".HomeActivity" />
         <activity android:name=".Admin.Admin" />
         <activity
@@ -60,6 +69,8 @@
             android:name=".Registration.Squad"
             android:parentActivityName=".Main2Activity" />
         <activity android:name=".Payment.RazorPay.RazorPay_Activity" />
+        <activity android:name=".UI.AddPlayerList" />
+        <activity android:name=".AfterPayment.AFSoloDetail"/>
         <activity android:name=".MainActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />

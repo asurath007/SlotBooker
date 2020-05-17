@@ -7,7 +7,7 @@
     android:layout_gravity="center"
     android:orientation="vertical"
     android:padding="5dp"
-    tools:context=".UI.DuoMapSelector"
+    tools:context=".AfterPayment.AFSolo"
     >
 
     <ImageView
@@ -18,10 +18,11 @@
         android:layout_margin="20dp"
         android:layout_marginBottom="10dp"
         android:src="@drawable/myknot_gaming_logo"
-        android:contentDescription="App Logo" />
+        android:contentDescription="App Logo"
+        android:visibility="gone"/>
 
     <androidx.recyclerview.widget.RecyclerView
-        android:id="@+id/rv_map_duo"
+        android:id="@+id/rv_map_af_solo"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         />

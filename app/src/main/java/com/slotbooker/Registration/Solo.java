@@ -2,7 +2,9 @@ package com.slotbooker.Registration;
 
 import android.app.Activity;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
+import android.os.Parcelable;
 import android.text.TextUtils;
 import android.util.Log;
 import android.view.View;
@@ -10,6 +12,7 @@ import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.LinearLayout;
 import android.widget.ProgressBar;
 import android.widget.SeekBar;
 import android.widget.Spinner;
@@ -18,6 +21,7 @@ import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.cardview.widget.CardView;
 
 import com.google.android.gms.tasks.Continuation;
 import com.google.android.gms.tasks.OnCompleteListener;
@@ -35,6 +39,8 @@ import com.google.firebase.firestore.Query;
 import com.google.firebase.firestore.QuerySnapshot;
 import com.razorpay.Checkout;
 import com.razorpay.PaymentResultListener;
+import com.slotbooker.Adapter.Model.MapList;
+import com.slotbooker.AfterPayment.AFSolo;
 import com.slotbooker.R;
 
 import org.json.JSONObject;
@@ -52,13 +58,16 @@ public class Solo extends AppCompatActivity implements AdapterView.OnItemSelecte
     private Button btn_submit;
     private Spinner spinner_solo;
     private ProgressBar progressBar,statusBar;
+    private List<MapList> mapList;
+    private SharedPreferences sp;
+
 
     private FirebaseAuth firebaseAuth;
     private FirebaseAuth.AuthStateListener authStateListener;
 
     private TextView name,map,mode,date,time,type;
     private TextView prizeMoney,moneyBreakUp,entryFee;
-    String id = "",paymentStatus="-",player1,slot;
+    String id = "",uID="",paymentStatus="-",player1,slot;
 
     private FirebaseFirestore db = FirebaseFirestore.getInstance();
     private CollectionReference collectionReference = db.collection("Solo Registration");
@@ -69,6 +78,9 @@ public class Solo extends AppCompatActivity implements AdapterView.OnItemSelecte
         setContentView(R.layout.activity_solo);
 
         firebaseAuth = FirebaseAuth.getInstance();
+        sp = getSharedPreferences("soloID",MODE_PRIVATE);
+        uID = sp.getString("value","");
+
 
         name = findViewById(R.id.tv_solo_match_title);
         map =findViewById(R.id.tv_solo_map);
@@ -106,6 +118,7 @@ public class Solo extends AppCompatActivity implements AdapterView.OnItemSelecte
             moneyBreakUp.setText(bundle.getString("mbu"));
             Log.d("mapID","map:"+bundle.getString("map"));
         }
+        slot = name.getText().toString();
 
         btn_submit.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -115,7 +128,7 @@ public class Solo extends AppCompatActivity implements AdapterView.OnItemSelecte
 
                     progressBar.setVisibility(View.VISIBLE);
 
-                    String player1 = et_solo.getText().toString().trim();
+                    player1 = et_solo.getText().toString().trim();
                     String slotBooked = spinner_solo.getSelectedItem().toString();
 
                     Map<String, Object> player = new HashMap<>();
@@ -148,16 +161,20 @@ public class Solo extends AppCompatActivity implements AdapterView.OnItemSelecte
     });
 
         //set progress bar
+        getPlayerCount();
+    }
+
+    private void getPlayerCount() {
         collectionReference.get().addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
             @Override
             public void onComplete(@NonNull Task<QuerySnapshot> task) {
                 if (task.isSuccessful()) {
                     int count=0;
                     if (count<100){
-                    for (DocumentSnapshot snapshot : Objects.requireNonNull(task.getResult())) {
-                        count=count+1;
-                    }
-//                    Toast.makeText(Solo.this, "Participants joined= "+count,Toast.LENGTH_SHORT).show();
+                        for (DocumentSnapshot snapshot : Objects.requireNonNull(task.getResult())) {
+                            count=count+1;
+                        }
+//                        Toast.makeText(Solo.this, "Participants joined = "+count,Toast.LENGTH_SHORT).show();
                         statusBar.setProgress(count);
                     }else{
                         Toast.makeText(Solo.this,"Slot Filled",Toast.LENGTH_SHORT).show();
@@ -216,11 +233,25 @@ public class Solo extends AppCompatActivity implements AdapterView.OnItemSelecte
 //        Toast.makeText(this, "Payment successfully done! " + razorpayPaymentID, Toast.LENGTH_SHORT).show();
         Toast.makeText(this, "Payment successfully done! ", Toast.LENGTH_SHORT).show();
 
+//        afterPayment();
+        try {
+
+            db.collection("Match List").document(uID).update("players",FieldValue.arrayUnion(player1));
+
+            Intent intent = new Intent(Solo.this, AFSolo.class);
+            intent.putExtra("id",uID);
+            startActivity(intent);
+            finish();
+        }catch (Exception e){
+            Toast.makeText(Solo.this, "Error in payment: " + e.getMessage(), Toast.LENGTH_SHORT).show();
+            e.printStackTrace();
+        }
+
         //change status in DB
         Map<String, Object> team = new HashMap<>();
 
         team.put("player1",player1);
-        team.put("slotBooked",slot);
+        team.put("slotBooked",uID);
         team.put("payment", "paid");
         collectionReference.document(id).set(team)
                 .addOnCompleteListener(new OnCompleteListener<Void>() {
@@ -233,7 +264,10 @@ public class Solo extends AppCompatActivity implements AdapterView.OnItemSelecte
                 Toast.makeText(Solo.this, "Updating Payment Status failed\nPlease check after sometime", Toast.LENGTH_LONG).show();
             }
         });
+
     }
+
+
 
     @Override
     public void onPaymentError(int code, String response) {
@@ -243,5 +277,4 @@ public class Solo extends AppCompatActivity implements AdapterView.OnItemSelecte
             Log.e("OnPaymentError", "Exception in onPaymentError", e);
         }
     }
-
 }

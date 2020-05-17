@@ -67,6 +67,7 @@ public class DuoMapSelector extends AppCompatActivity {
                             MapList match = doc.toObject(MapList.class);
                             assert match != null;
                             match.setId(doc.getId());
+                            Log.d("MAPID", "MatchId:"+doc.getId());
                             getMatchList.add(match);
                         }
                         mapAdapter = new MapAdapter(getMatchList, getApplicationContext(), firestoreDB, "DUO");
@@ -89,6 +90,7 @@ public class DuoMapSelector extends AppCompatActivity {
                         MapList match = doc.toObject(MapList.class);
                         assert match != null;
                         match.setId(doc.getId());
+
                         getMatchList.add(match);
                     }
 //                    mapAdapter = new MapAdapter(getMatchList, getApplicationContext(), firestoreDB);

@@ -4,6 +4,7 @@ import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.app.Activity;
+import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.text.TextUtils;
@@ -25,10 +26,12 @@ import com.google.android.gms.tasks.Task;
 import com.google.firebase.firestore.CollectionReference;
 import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.DocumentSnapshot;
+import com.google.firebase.firestore.FieldValue;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.QuerySnapshot;
 import com.razorpay.Checkout;
 import com.razorpay.PaymentResultListener;
+import com.slotbooker.AfterPayment.AFSolo;
 import com.slotbooker.R;
 
 import org.json.JSONObject;
@@ -49,6 +52,7 @@ public class Duo extends AppCompatActivity implements AdapterView.OnItemSelected
     private int progress;
     String id = "", paymentStatus ="-";
     String teamName,player1,player2,slot;
+    private SharedPreferences sp;
 
     private FirebaseFirestore db = FirebaseFirestore.getInstance();
     private CollectionReference collectionReference = db.collection("Match List").document("Duo Match").collection("Match List");
@@ -96,7 +100,7 @@ public class Duo extends AppCompatActivity implements AdapterView.OnItemSelected
             moneyBreakUp.setText(bundle.getString("mbu"));
             Log.d("mapID","map:"+bundle.getString("map"));
         }
-
+        slot = name.getText().toString();
         btn_submit.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -144,6 +148,10 @@ public class Duo extends AppCompatActivity implements AdapterView.OnItemSelected
         }
         });
         //getting player count
+        getPlayerCount();
+    }
+
+    private void getPlayerCount() {
         collectionReference.get().addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
             @Override
             public void onComplete(@NonNull Task<QuerySnapshot> task) {
@@ -153,7 +161,7 @@ public class Duo extends AppCompatActivity implements AdapterView.OnItemSelected
                         for (DocumentSnapshot snapshot : Objects.requireNonNull(task.getResult())) {
                             count=count+1;
                         }
-//                    Toast.makeText(Duo.this, "Participants joined= "+count,Toast.LENGTH_SHORT).show();
+//                        Toast.makeText(Duo.this, "Participants joined = "+count,Toast.LENGTH_SHORT).show();
                         statusBar.setProgress(count);
                     }else{
                         Toast.makeText(Duo.this,"Slot Filled",Toast.LENGTH_SHORT).show();
@@ -212,7 +220,19 @@ public class Duo extends AppCompatActivity implements AdapterView.OnItemSelected
     public void onPaymentSuccess(String razorpayPaymentID) {
 //        Toast.makeText(this, "Payment successfully done! " + razorpayPaymentID, Toast.LENGTH_SHORT).show();
         Toast.makeText(this, "Payment successfully done!", Toast.LENGTH_SHORT).show();
+        try {
+            sp = getSharedPreferences("myKey",MODE_PRIVATE);
+            final String uID = sp.getString("value","");
+            db.collection("Users").document(uID).update("MatchRegistered", FieldValue.arrayUnion(slot));
 
+            Intent intent = new Intent(Duo.this, AFSolo.class);
+            intent.putExtra("id",id);
+            startActivity(intent);
+            finish();
+        }catch (Exception e){
+            Toast.makeText(Duo.this, "Error in payment: " + e.getMessage(), Toast.LENGTH_SHORT).show();
+            e.printStackTrace();
+        }
         //change status in DB
         Map<String, Object> team = new HashMap<>();
 

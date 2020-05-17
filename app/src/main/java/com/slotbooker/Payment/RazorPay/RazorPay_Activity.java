@@ -28,6 +28,7 @@ public class RazorPay_Activity extends AppCompatActivity implements PaymentResul
         setContentView(R.layout.razor_pay);
         findViews();
         listeners();
+        // API key in app meta data
     }
 
     public void findViews() {

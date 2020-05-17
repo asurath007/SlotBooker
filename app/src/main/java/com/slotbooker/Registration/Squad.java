@@ -155,6 +155,10 @@ public class Squad extends AppCompatActivity implements AdapterView.OnItemSelect
         }
         });
         //getting player count
+        getPlayerCount();
+            }
+
+    private void getPlayerCount() {
         collectionReference.get().addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
             @Override
             public void onComplete(@NonNull Task<QuerySnapshot> task) {
@@ -164,7 +168,7 @@ public class Squad extends AppCompatActivity implements AdapterView.OnItemSelect
                         for (DocumentSnapshot snapshot : Objects.requireNonNull(task.getResult())) {
                             count=count+1;
                         }
-                    Toast.makeText(Squad.this, "Participants joined= "+count,Toast.LENGTH_SHORT).show();
+//                        Toast.makeText(Squad.this, "Participants joined  "+count,Toast.LENGTH_SHORT).show();
                         statusBar.setProgress(count);
                     }else{
                         Toast.makeText(Squad.this,"Slot Filled",Toast.LENGTH_SHORT).show();
@@ -174,6 +178,7 @@ public class Squad extends AppCompatActivity implements AdapterView.OnItemSelect
                 }
             }
         });
+
     }
 
     @Override

@@ -62,8 +62,6 @@ public class Main2Activity extends AppCompatActivity {
         btn_duo = findViewById(R.id.btn_duo);
         btn_squad = findViewById(R.id.btn_squad);
 
-
-
         btn_solo.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -74,8 +72,6 @@ public class Main2Activity extends AppCompatActivity {
 
             }
         });
-
-
         btn_duo.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -83,7 +79,6 @@ public class Main2Activity extends AppCompatActivity {
 
             }
         });
-
         btn_squad.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {

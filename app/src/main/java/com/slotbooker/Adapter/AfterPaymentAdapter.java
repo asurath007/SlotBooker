@@ -13,6 +13,7 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.slotbooker.Adapter.Model.MapList;
+import com.slotbooker.AfterPayment.AFSoloDetail;
 import com.slotbooker.R;
 import com.slotbooker.Registration.Duo;
 import com.slotbooker.Registration.Solo;
@@ -20,25 +21,25 @@ import com.slotbooker.Registration.Squad;
 
 import java.util.List;
 
-public class MapAdapter extends RecyclerView.Adapter<MapAdapter.ViewHolder> {
+public class AfterPaymentAdapter extends RecyclerView.Adapter<AfterPaymentAdapter.ViewHolder> {
     private Context context;
     private List<MapList> mapList;
     private FirebaseFirestore firestoreDB = FirebaseFirestore.getInstance();
     private String mTag;
 
-    public MapAdapter(Context context, List mapList){
+    public AfterPaymentAdapter(Context context, List mapList){
         this.context = context;
         this.mapList = mapList;
 //        this.matchDB = matchDB;
 
     }
-    public MapAdapter(List<MapList> getMatchList, Context applicationContext, FirebaseFirestore firestoreDB) {
+    public AfterPaymentAdapter(List<MapList> getMatchList, Context applicationContext, FirebaseFirestore firestoreDB) {
         this.mapList = getMatchList;
         this.context = applicationContext;
         this.firestoreDB = firestoreDB;
     }
 
-    public MapAdapter(List<MapList> getMatchList, Context applicationContext, FirebaseFirestore firestoreDB, String Tag) {
+    public AfterPaymentAdapter(List<MapList> getMatchList, Context applicationContext, FirebaseFirestore firestoreDB, String Tag) {
         this.mapList = getMatchList;
         this.context = applicationContext;
         this.firestoreDB = firestoreDB;
@@ -47,14 +48,14 @@ public class MapAdapter extends RecyclerView.Adapter<MapAdapter.ViewHolder> {
 
     @NonNull
     @Override
-    public ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
+    public AfterPaymentAdapter.ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
         View view = LayoutInflater.from(parent.getContext())
                 .inflate(R.layout.maps_list_row, parent, false);
-        return new ViewHolder(view, mTag); //view from the ViewHolder @end is passed
+        return new AfterPaymentAdapter.ViewHolder(view, mTag); //view from the ViewHolder @end is passed
     }
 
     @Override
-    public void onBindViewHolder(@NonNull MapAdapter.ViewHolder holder, int position) {
+    public void onBindViewHolder(@NonNull AfterPaymentAdapter.ViewHolder holder, int position) {
         MapList map = mapList.get(position);
 
         holder.name.setText(map.getName()); holder.map.setText(map.getMap());
@@ -105,8 +106,8 @@ public class MapAdapter extends RecyclerView.Adapter<MapAdapter.ViewHolder> {
 
             //get to registration page
             switch (mTag){
-                case "SOLO":
-                    Intent intentSolo = new Intent(context, Solo.class);
+                case "SOLO_PAID":
+                    Intent intentSolo = new Intent(context, AFSoloDetail.class);
                     intentSolo.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
                     intentSolo.putExtra("name",list.getName());
                     intentSolo.putExtra("map",list.getMap());

@@ -1,11 +1,13 @@
 package com.slotbooker.Util;
 
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 public class UserDetail {
     private String id,CODUserName,PUBGUserName,lastName,firstName,userName,userEmail;
     private static UserDetail instance;
+    private List<String>MatchRegistered;
 
     public UserDetail(String email, String userName, String currentUserId) {
         this.userEmail = email;
@@ -29,14 +31,23 @@ public class UserDetail {
         this.PUBGUserName = pun;
         this.CODUserName = cun;
     }
-
-    public UserDetail(String email, String userName, String fn, String ln ,String pun, String cun){
+    public UserDetail(String email, String userName, String fn, String ln , String pun, String cun) {
         this.userEmail = email;
         this.userName = userName;
         this.firstName = fn;
         this.lastName = ln;
         this.PUBGUserName = pun;
         this.CODUserName = cun;
+    }
+
+    public UserDetail(String email, String userName, String fn, String ln , String pun, String cun, List<String>MatchRegistered){
+        this.userEmail = email;
+        this.userName = userName;
+        this.firstName = fn;
+        this.lastName = ln;
+        this.PUBGUserName = pun;
+        this.CODUserName = cun;
+        this.MatchRegistered = MatchRegistered;
     }
 
     public Map<String,Object> newUser(){
@@ -47,6 +58,7 @@ public class UserDetail {
         user.put("LastName",lastName);
         user.put("PUBG",PUBGUserName);
         user.put("COD",CODUserName);
+        user.put("MatchRegistered","");
 //        user.put("ID",id);
 //        user.put();
 
