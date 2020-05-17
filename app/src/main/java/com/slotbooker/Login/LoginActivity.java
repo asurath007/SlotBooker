@@ -112,9 +112,9 @@ public class LoginActivity extends AppCompatActivity {
          **/
 
         //check if previously logged
-//        if (sp.getBoolean("logged", false)) {
-//            skipLogin();
-//        }
+        if (sp.getBoolean("logged", false)) {
+            skipLogin();
+        }
 
         btn_create_account.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -138,8 +138,8 @@ public class LoginActivity extends AppCompatActivity {
 //                inputManager.hideSoftInputFromWindow(Objects.requireNonNull(getCurrentFocus()).getWindowToken(),
 //                        InputMethodManager.HIDE_NOT_ALWAYS);
 
-//                sp.edit().putBoolean("logged", true).apply();
-
+                //skip login condition
+                sp.edit().putBoolean("logged", true).apply();
             }
         });
 
@@ -202,6 +202,7 @@ public class LoginActivity extends AppCompatActivity {
                                                     ud.setUserName(snapshot.getString("userName"));
                                                     ud.setId(snapshot.getId());
                                                     Log.d("KEY","ID:"+snapshot.getId());
+                                                    //pass id to fetch prof info
                                                     SharedPreferences sharedPref = getSharedPreferences("loginKey", MODE_PRIVATE);
                                                     SharedPreferences.Editor editor = sharedPref.edit();
                                                     editor.putString("value", snapshot.getId());

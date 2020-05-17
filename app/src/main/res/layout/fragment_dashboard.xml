@@ -12,36 +12,6 @@
     tools:context=".Main2Activity">
 
 
-    <Button
-        android:id="@+id/btn_solo"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginVertical="20dp"
-        android:background="@color/colorPrimaryLight"
-        android:text="@string/solo"
-        android:textColor="@color/colorPrimary"
-        android:textSize="16sp" />
-
-    <Button
-        android:id="@+id/btn_duo"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginVertical="20dp"
-        android:background="@color/colorPrimaryLight"
-        android:text="@string/duo"
-        android:textColor="@color/colorPrimary"
-        android:textSize="16sp" />
-
-    <Button
-        android:id="@+id/btn_squad"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginVertical="20dp"
-        android:background="@color/colorPrimaryLight"
-        android:text="@string/squad"
-        android:textColor="@color/colorPrimary"
-        android:textSize="16sp" />
-
 
 
 </LinearLayout>

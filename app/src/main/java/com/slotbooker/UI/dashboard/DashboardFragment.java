@@ -14,6 +14,7 @@ import androidx.fragment.app.Fragment;
 import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProviders;
 
+import com.slotbooker.AfterPayment.AFSolo;
 import com.slotbooker.Main2Activity;
 import com.slotbooker.R;
 import com.slotbooker.Registration.Duo;
@@ -32,43 +33,15 @@ public class DashboardFragment extends Fragment {
                 ViewModelProviders.of(this).get(com.slotbooker.UI.dashboard.DashboardViewModel.class);
         final View root = inflater.inflate(R.layout.fragment_dashboard, container, false);
 //        final TextView textView = root.findViewById(R.id.text_dashboard);
-        final Button btn_solo = root.findViewById(R.id.btn_solo);
-        final Button btn_duo = root.findViewById(R.id.btn_duo);
-        final Button btn_squad = root.findViewById(R.id.btn_squad);
+
         dashboardViewModel.getText().observe(getViewLifecycleOwner(), new Observer<String>() {
             @Override
             public void onChanged(@Nullable String s) {
 //                textView.setText(s);
-
-
-
-
-                btn_solo.setOnClickListener(new View.OnClickListener() {
-                    @Override
-                    public void onClick(View v) {
-//                solo_count++;
-//                Bundle keeper = new Bundle();
-//                keeper.putInt("key", solo_count);
-                        startActivity(new Intent(getActivity(), SoloMapSelector.class));
-
-                    }
-                });
-
-
-                btn_duo.setOnClickListener(new View.OnClickListener() {
-                    @Override
-                    public void onClick(View v) {
-                        startActivity(new Intent(getActivity(), DuoMapSelector.class));
-
-                    }
-                });
-
-                btn_squad.setOnClickListener(new View.OnClickListener() {
-                    @Override
-                    public void onClick(View v) {
-                        startActivity(new Intent(getActivity(), SquadMapSelector.class));
-                    }
-                });
+                Intent intent = new Intent(getActivity(), AFSolo.class);
+                intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+                startActivity(intent);
+                getActivity().finish();
             }
     });
         return root;

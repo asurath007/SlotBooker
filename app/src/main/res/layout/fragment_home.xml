@@ -69,10 +69,11 @@
             android:layout_height="wrap_content"
             android:text="@string/pubg"/>
             <ImageView
+                android:id="@+id/iv_pubg"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:src="@drawable/img_pubg2"
-                android:alpha="0.6"
+                android:alpha="0.8"
                 />
 
     </androidx.cardview.widget.CardView>
@@ -92,10 +93,11 @@
                 android:layout_height="wrap_content"
                 android:text="@string/cod"/>
             <ImageView
+                android:id="@+id/iv_cod"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:src="@drawable/img_cod"
-                android:alpha="0.6"/>
+                android:alpha="0.8"/>
 
         </androidx.cardview.widget.CardView>
         <!--r2c1-->

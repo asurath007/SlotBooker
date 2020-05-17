@@ -152,6 +152,7 @@ public class ProfileFragment extends Fragment {
                         SharedPreferences sp = getContext().getSharedPreferences("login",MODE_PRIVATE);
                         sp.edit().putBoolean("logged",false).apply();
 
+                        //clear ids
                         SharedPreferences sp1 = getContext().getSharedPreferences("signupKey",MODE_PRIVATE);
                         SharedPreferences sp2 = getContext().getSharedPreferences("loginKey",MODE_PRIVATE);
                         sp1.edit().clear().apply();

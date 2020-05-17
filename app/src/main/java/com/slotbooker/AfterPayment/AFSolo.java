@@ -39,7 +39,7 @@ public class AFSolo extends AppCompatActivity {
 
     private ListenerRegistration firestoreListener;
     private FirebaseFirestore firestoreDB = FirebaseFirestore.getInstance();
-    private CollectionReference matchRef = firestoreDB.collection("Match List");
+    private CollectionReference matchRef = firestoreDB.collection("Solo Registration");
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -54,10 +54,10 @@ public class AFSolo extends AppCompatActivity {
 
         Bundle bundle = getIntent().getExtras();
         assert bundle != null;
-        id = bundle.getString("id");
+//        id = bundle.getString("id");
         Log.d("AF","id:"+id);
 
-        firestoreListener = matchRef
+        firestoreListener = matchRef.whereEqualTo("player1","abcd")
                 .addSnapshotListener(new EventListener<QuerySnapshot>() {
                     @Override
                     public void onEvent(@Nullable QuerySnapshot queryDocumentSnapshots, @Nullable FirebaseFirestoreException e) {
@@ -83,7 +83,7 @@ public class AFSolo extends AppCompatActivity {
     }
 
     private void loadMatchList() {
-        matchRef.whereEqualTo("id",id)
+        matchRef
                 .get().addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
             @Override
             public void onComplete(@NonNull Task<QuerySnapshot> task) {

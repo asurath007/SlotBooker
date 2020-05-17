@@ -13,6 +13,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -47,7 +48,8 @@ public class HomeFragment extends Fragment implements PaymentResultListener {
         final Button btn_website = root.findViewById(R.id.btn_home_website);
         final Button btn_donate = root.findViewById(R.id.btn_home_donate);
 
-
+        final ImageView iv1 = root.findViewById(R.id.iv_pubg);
+        final ImageView iv2 = root.findViewById(R.id.iv_cod);
 
         final Context mContext = getContext();
 
@@ -120,6 +122,15 @@ public class HomeFragment extends Fragment implements PaymentResultListener {
                     @Override
                     public void onClick(View v) {
                         startPayment();
+                    }
+                });
+
+                iv1.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        Intent intent = new Intent(getActivity(), Main2Activity.class);
+                        intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+                        startActivity(intent);
                     }
                 });
             }
