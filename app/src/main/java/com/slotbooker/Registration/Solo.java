@@ -59,15 +59,15 @@ public class Solo extends AppCompatActivity implements AdapterView.OnItemSelecte
     private Spinner spinner_solo;
     private ProgressBar progressBar,statusBar;
     private List<MapList> mapList;
-    private SharedPreferences sp;
-
+    private SharedPreferences sp,sp1,sp2;
 
     private FirebaseAuth firebaseAuth;
     private FirebaseAuth.AuthStateListener authStateListener;
 
     private TextView name,map,mode,date,time,type;
     private TextView prizeMoney,moneyBreakUp,entryFee;
-    String id = "",uID="",paymentStatus="-",player1,slot;
+    String id = "",uID="",paymentStatus="-",player1="",slot;
+    String sID = "", lID = "",playerID="";
 
     private FirebaseFirestore db = FirebaseFirestore.getInstance();
     private CollectionReference collectionReference = db.collection("Solo Registration");
@@ -78,9 +78,13 @@ public class Solo extends AppCompatActivity implements AdapterView.OnItemSelecte
         setContentView(R.layout.activity_solo);
 
         firebaseAuth = FirebaseAuth.getInstance();
-        sp = getSharedPreferences("soloID",MODE_PRIVATE);
+        sp = getSharedPreferences("matchID",MODE_PRIVATE);
         uID = sp.getString("value","");
-
+        sp1 = getSharedPreferences("signupKey", MODE_PRIVATE);
+        sID = sp1.getString("value", "");
+        sp2 = getSharedPreferences("loginKey",MODE_PRIVATE);
+        lID = sp2.getString("value","");
+        playerID = sID+"-"+lID;
 
         name = findViewById(R.id.tv_solo_match_title);
         map =findViewById(R.id.tv_solo_map);
@@ -116,10 +120,10 @@ public class Solo extends AppCompatActivity implements AdapterView.OnItemSelecte
             entryFee.setText(bundle.getString("ef"));
             prizeMoney.setText(bundle.getString("pm"));
             moneyBreakUp.setText(bundle.getString("mbu"));
-            Log.d("mapID","map:"+bundle.getString("map"));
+//            uID =bundle.getString("ID");
+            //Log.d("mapID","map:"+bundle.getString("map"));
         }
         slot = name.getText().toString();
-
         btn_submit.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -131,7 +135,9 @@ public class Solo extends AppCompatActivity implements AdapterView.OnItemSelecte
                     player1 = et_solo.getText().toString().trim();
                     String slotBooked = spinner_solo.getSelectedItem().toString();
 
-                    Map<String, Object> player = new HashMap<>();
+                    Map<String, String> player = new HashMap<>();
+                    //put sID||lID & retrieve while sorting on user side list of matches
+                    player.put("ID", playerID);
                     player.put("player1", player1);
                     player.put("slotBooked", slotBooked);
                     player.put("payment",paymentStatus);
@@ -146,6 +152,7 @@ public class Solo extends AppCompatActivity implements AdapterView.OnItemSelecte
                         @Override
                         public void onSuccess(DocumentReference documentReference) {
                             id = documentReference.getId();
+                            Log.d("playerID","sid:"+sID+"\nlid:"+lID+"\ndoc:"+id+"\nplayer1:"+player1+"\nuID:"+uID);
                             Toast.makeText(Solo.this, "\t\tComplete Payment to \n confirm your participation",
                                     Toast.LENGTH_SHORT).show();
                             startPayment();
@@ -232,11 +239,11 @@ public class Solo extends AppCompatActivity implements AdapterView.OnItemSelecte
     public void onPaymentSuccess(String razorpayPaymentID) {
 //        Toast.makeText(this, "Payment successfully done! " + razorpayPaymentID, Toast.LENGTH_SHORT).show();
         Toast.makeText(this, "Payment successfully done! ", Toast.LENGTH_SHORT).show();
-
-//        afterPayment();
+        //clear docID passed
+        sp.edit().clear().apply();
         try {
-
-            db.collection("Match List").document(uID).update("players",FieldValue.arrayUnion(player1));
+            //creating array of players in the match detail list
+            db.collection("Match List").document(uID).update("players",FieldValue.arrayUnion(playerID));
 
             Intent intent = new Intent(Solo.this, AFSolo.class);
             intent.putExtra("id",uID);
@@ -246,10 +253,9 @@ public class Solo extends AppCompatActivity implements AdapterView.OnItemSelecte
             Toast.makeText(Solo.this, "Error in payment: " + e.getMessage(), Toast.LENGTH_SHORT).show();
             e.printStackTrace();
         }
-
         //change status in DB
-        Map<String, Object> team = new HashMap<>();
-
+        Map<String, String> team = new HashMap<>();
+        team.put("ID", playerID);
         team.put("player1",player1);
         team.put("slotBooked",uID);
         team.put("payment", "paid");

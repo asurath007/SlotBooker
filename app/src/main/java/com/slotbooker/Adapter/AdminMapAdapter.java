@@ -72,7 +72,7 @@ public class AdminMapAdapter extends RecyclerView.Adapter<AdminMapAdapter.ViewHo
         holder.time.setText(map.getTime()); holder.prizeMoney.setText(map.getPrizeMoney());
         holder.moneyBreakUp.setText(map.getMoneyBreakUp()); holder.entryFee.setText(map.getEntryFee());
         holder.match_status.setProgress(map.getProgress()); holder.type.setText(map.getType());
-    }
+}
 
     @Override
     public int getItemCount() {

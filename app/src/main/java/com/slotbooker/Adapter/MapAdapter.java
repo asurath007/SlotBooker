@@ -2,6 +2,7 @@ package com.slotbooker.Adapter;
 
 import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -9,9 +10,14 @@ import android.widget.ProgressBar;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.google.firebase.firestore.EventListener;
 import com.google.firebase.firestore.FirebaseFirestore;
+import com.google.firebase.firestore.FirebaseFirestoreException;
+import com.google.firebase.firestore.Query;
+import com.google.firebase.firestore.QuerySnapshot;
 import com.slotbooker.Adapter.Model.MapList;
 import com.slotbooker.R;
 import com.slotbooker.Registration.Duo;
@@ -20,11 +26,13 @@ import com.slotbooker.Registration.Squad;
 
 import java.util.List;
 
+import static android.content.Context.MODE_PRIVATE;
+
 public class MapAdapter extends RecyclerView.Adapter<MapAdapter.ViewHolder> {
     private Context context;
     private List<MapList> mapList;
     private FirebaseFirestore firestoreDB = FirebaseFirestore.getInstance();
-    private String mTag;
+    private String mTag,docID="";
 
     public MapAdapter(Context context, List mapList){
         this.context = context;
@@ -56,7 +64,7 @@ public class MapAdapter extends RecyclerView.Adapter<MapAdapter.ViewHolder> {
     @Override
     public void onBindViewHolder(@NonNull MapAdapter.ViewHolder holder, int position) {
         MapList map = mapList.get(position);
-
+//        docID = mapList.get(position).getId();
         holder.name.setText(map.getName()); holder.map.setText(map.getMap());
         holder.mode.setText(map.getMode()); holder.date.setText(map.getDate());
         holder.time.setText(map.getTime()); holder.prizeMoney.setText(map.getPrizeMoney());
@@ -95,20 +103,27 @@ public class MapAdapter extends RecyclerView.Adapter<MapAdapter.ViewHolder> {
             moneyBreakUp = itemView.findViewById(R.id.tv_moneyBreakUp);
             entryFee = itemView.findViewById(R.id.tv_entryFee);
             match_status = itemView.findViewById(R.id.match_status);
+
         }
 
         @Override
         public void onClick(View v) {
 
             int position = getAdapterPosition();
-            MapList list = mapList.get(position);
 
+            MapList list = mapList.get(position);
+            docID = mapList.get(position).getId();
+            SharedPreferences sharedPref = context.getSharedPreferences("matchID", MODE_PRIVATE);
+            SharedPreferences.Editor editor = sharedPref.edit();
+            editor.putString("value", docID);
+            editor.apply();
             //get to registration page
             switch (mTag){
                 case "SOLO":
                     Intent intentSolo = new Intent(context, Solo.class);
                     intentSolo.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
                     intentSolo.putExtra("name",list.getName());
+                    intentSolo.putExtra("ID",docID);
                     intentSolo.putExtra("map",list.getMap());
                     intentSolo.putExtra("date",list.getDate());
                     intentSolo.putExtra("time",list.getTime());

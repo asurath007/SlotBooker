@@ -61,7 +61,7 @@ public class HomeFragment extends Fragment implements PaymentResultListener {
                     @Override
                     public void onClick(View v) {
                         Intent intentDiscord = new Intent(Intent.ACTION_VIEW);
-                        String url = "https://discord.gg/rkfmJD";
+                        String url = "https://discord.gg/5VFDyHZ";
                         intentDiscord.setData(Uri.parse(url));
                         intentDiscord.setPackage("com.discord");
                         if (isIntentAvailable(mContext, intentDiscord)){

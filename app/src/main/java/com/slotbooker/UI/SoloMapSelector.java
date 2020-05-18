@@ -69,10 +69,10 @@ public class SoloMapSelector extends AppCompatActivity {
                             match.setId(doc.getId());
                             Log.d("MAPID", "MatchId:"+doc.getId());
                             //passing doc id
-                            SharedPreferences sharedPref = getSharedPreferences("soloID", MODE_PRIVATE);
-                            SharedPreferences.Editor editor = sharedPref.edit();
-                            editor.putString("value", doc.getId());
-                            editor.apply();
+//                            SharedPreferences sharedPref = getSharedPreferences("soloID", MODE_PRIVATE);
+//                            SharedPreferences.Editor editor = sharedPref.edit();
+//                            editor.putString("value", doc.getId());
+//                            editor.apply();
                             getMatchList.add(match);
                         }
                         mapAdapter = new MapAdapter(getMatchList, getApplicationContext(), firestoreDB, "SOLO");

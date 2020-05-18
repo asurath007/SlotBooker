@@ -5,6 +5,7 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import android.app.Activity;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.text.TextUtils;
 import android.util.Log;
@@ -25,10 +26,12 @@ import com.google.android.gms.tasks.Task;
 import com.google.firebase.firestore.CollectionReference;
 import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.DocumentSnapshot;
+import com.google.firebase.firestore.FieldValue;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.QuerySnapshot;
 import com.razorpay.Checkout;
 import com.razorpay.PaymentResultListener;
+import com.slotbooker.AfterPayment.AFSolo;
 import com.slotbooker.R;
 import com.slotbooker.Payment.RazorPay.RazorPay_Activity;
 
@@ -52,7 +55,9 @@ public class Squad extends AppCompatActivity implements AdapterView.OnItemSelect
     private TextView name,map,mode,date,time,type;
     private TextView prizeMoney,moneyBreakUp,entryFee;
     String teamName,player1,player2,player3,player4,slot;
-    String id="",paymentStatus="-";
+    String id="",paymentStatus="-",uID="";
+    String sID = "", lID = "",playerID="";
+    private SharedPreferences sp,sp1,sp2;
 
 
     private FirebaseFirestore db = FirebaseFirestore.getInstance();
@@ -64,6 +69,14 @@ public class Squad extends AppCompatActivity implements AdapterView.OnItemSelect
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_squad);
+
+        sp = getSharedPreferences("matchID",MODE_PRIVATE);
+        uID = sp.getString("value","");
+        sp1 = getSharedPreferences("signupKey", MODE_PRIVATE);
+        sID = sp1.getString("value", "");
+        sp2 = getSharedPreferences("loginKey",MODE_PRIVATE);
+        lID = sp2.getString("value","");
+        playerID = sID+"-"+lID;
 
         name = findViewById(R.id.tv_squad_match_title);
         map =findViewById(R.id.tv_squad_map);
@@ -123,7 +136,8 @@ public class Squad extends AppCompatActivity implements AdapterView.OnItemSelect
                 player4 = et_squad_4.getText().toString().trim();
                 slot = spinner_squad.getSelectedItem().toString();
 
-                Map<String, Object> player = new HashMap<>();
+                Map<String, String> player = new HashMap<>();
+                player.put("ID",playerID);
                 player.put("teamName",teamName);
                 player.put("player1",player1);
                 player.put("player2",player2);
@@ -144,6 +158,7 @@ public class Squad extends AppCompatActivity implements AdapterView.OnItemSelect
                         Toast.makeText(Squad.this, "\t\tComplete Payment to \n confirm your participation",
                                 Toast.LENGTH_SHORT).show();
                         id = documentReference.getId();
+                        Log.d("playerID","sid:"+sID+"\nlid:"+lID+"\ndoc:"+id+"\nplayer1:"+player1+"\nuID:"+uID);
                         startPayment();
                         progressBar.setVisibility(View.INVISIBLE);
                     }
@@ -229,16 +244,29 @@ public class Squad extends AppCompatActivity implements AdapterView.OnItemSelect
     public void onPaymentSuccess(String razorpayPaymentID) {
 //        Toast.makeText(this, "Payment successfully done! " + razorpayPaymentID, Toast.LENGTH_SHORT).show();
         Toast.makeText(this, "Payment successfully done! ", Toast.LENGTH_SHORT).show();
-        //move to registered page
+        //clear docID passed
+         sp.edit().clear().apply();
+        try {
+            //creating array of players in the match detail list
+            db.collection("Match List").document(uID).update("players", FieldValue.arrayUnion(playerID));
+
+            Intent intent = new Intent(Squad.this, AFSolo.class);
+            intent.putExtra("id",uID);
+            startActivity(intent);
+            finish();
+        }catch (Exception e){
+            Toast.makeText(Squad.this, "Error in payment: " + e.getMessage(), Toast.LENGTH_SHORT).show();
+            e.printStackTrace();
+        }
         //change status in DB
         Map<String, Object> team = new HashMap<>();
-
+        team.put("ID",playerID);
         team.put("teamName",teamName);
         team.put("player1",player1);
         team.put("player2",player2);
         team.put("player3",player3);
         team.put("player4",player4);
-        team.put("slotBooked",slot);
+        team.put("slotBooked",uID);
         team.put("payment", "paid");
 
         collectionReference.document(id).set(team)

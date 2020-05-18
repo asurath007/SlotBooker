@@ -23,6 +23,7 @@ import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
+import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.firestore.CollectionReference;
 import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.DocumentSnapshot;
@@ -50,12 +51,15 @@ public class Duo extends AppCompatActivity implements AdapterView.OnItemSelected
     private TextView name,map,mode,date,time,type;
     private TextView prizeMoney,moneyBreakUp,entryFee;
     private int progress;
-    String id = "", paymentStatus ="-";
+    String id = "", paymentStatus ="-",uID="";
+    String sID = "", lID = "",playerID="";
     String teamName,player1,player2,slot;
-    private SharedPreferences sp;
+    private SharedPreferences sp,sp1,sp2;
 
+    private FirebaseAuth firebaseAuth;
+    private FirebaseAuth.AuthStateListener authStateListener;
     private FirebaseFirestore db = FirebaseFirestore.getInstance();
-    private CollectionReference collectionReference = db.collection("Match List").document("Duo Match").collection("Match List");
+    private CollectionReference collectionReference = db.collection("Duo Registration");
 //    private DocumentReference documentReference = db.collection("Solo Registration").document("Team[]");
 
 
@@ -63,6 +67,15 @@ public class Duo extends AppCompatActivity implements AdapterView.OnItemSelected
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_duo);
+
+        firebaseAuth = FirebaseAuth.getInstance();
+        sp = getSharedPreferences("matchID",MODE_PRIVATE);
+        uID = sp.getString("value","");
+        sp1 = getSharedPreferences("signupKey", MODE_PRIVATE);
+        sID = sp1.getString("value", "");
+        sp2 = getSharedPreferences("loginKey",MODE_PRIVATE);
+        lID = sp2.getString("value","");
+        playerID = sID+"-"+lID;
 
         name = findViewById(R.id.tv_duo_match_title);
         map =findViewById(R.id.tv_duo_map);
@@ -116,7 +129,8 @@ public class Duo extends AppCompatActivity implements AdapterView.OnItemSelected
                 player2 = et_duo_2.getText().toString().trim();
                 slot = spinner_duo.getSelectedItem().toString();
 
-                Map<String, Object> player = new HashMap<>();
+                Map<String, String> player = new HashMap<>();
+                player.put("ID",playerID);
                 player.put("teamName",teamName);
                 player.put("player1",player1);
                 player.put("player2",player2);
@@ -133,7 +147,7 @@ public class Duo extends AppCompatActivity implements AdapterView.OnItemSelected
                     @Override
                     public void onSuccess(DocumentReference documentReference) {
                         id = documentReference.getId();
-                        Log.d("DuoID","ID: "+id);
+                        Log.d("playerID","sid:"+sID+"\nlid:"+lID+"\ndoc:"+id+"\nplayer1:"+player1+"\nuID:"+uID);
                         Toast.makeText(Duo.this, "\t\tComplete Payment to \n confirm your participation",
                                 Toast.LENGTH_SHORT).show();
                         startPayment();
@@ -220,13 +234,14 @@ public class Duo extends AppCompatActivity implements AdapterView.OnItemSelected
     public void onPaymentSuccess(String razorpayPaymentID) {
 //        Toast.makeText(this, "Payment successfully done! " + razorpayPaymentID, Toast.LENGTH_SHORT).show();
         Toast.makeText(this, "Payment successfully done!", Toast.LENGTH_SHORT).show();
+        //clear docID passed
+        sp.edit().clear().apply();
         try {
-            sp = getSharedPreferences("myKey",MODE_PRIVATE);
-            final String uID = sp.getString("value","");
-            db.collection("Users").document(uID).update("MatchRegistered", FieldValue.arrayUnion(slot));
+            //creating array of players in the match detail list
+            db.collection("Match List").document(uID).update("players",FieldValue.arrayUnion(playerID));
 
             Intent intent = new Intent(Duo.this, AFSolo.class);
-            intent.putExtra("id",id);
+            intent.putExtra("id",uID);
             startActivity(intent);
             finish();
         }catch (Exception e){
@@ -234,12 +249,12 @@ public class Duo extends AppCompatActivity implements AdapterView.OnItemSelected
             e.printStackTrace();
         }
         //change status in DB
-        Map<String, Object> team = new HashMap<>();
-
+        Map<String, String> team = new HashMap<>();
+        team.put("ID",playerID);
         team.put("teamName",teamName);
         team.put("player1",player1);
         team.put("player2",player2);
-        team.put("slotBooked",slot);
+        team.put("slotBooked",uID);
         team.put("payment", "paid");
         collectionReference.document(id).set(team)
                 .addOnCompleteListener(new OnCompleteListener<Void>() {

@@ -6,6 +6,7 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.util.Log;
 import android.widget.TextView;
@@ -16,6 +17,7 @@ import com.google.android.gms.tasks.Task;
 import com.google.firebase.firestore.CollectionReference;
 import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.EventListener;
+import com.google.firebase.firestore.FieldValue;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.FirebaseFirestoreException;
 import com.google.firebase.firestore.ListenerRegistration;
@@ -35,11 +37,12 @@ public class AFSolo extends AppCompatActivity {
     private RecyclerView recyclerView;
     private RecyclerView.Adapter mapAdapter;
     private List<MapList> mapLists;
-    String id="";
+    String id="",sID="",lID="",playerID="";
+    private SharedPreferences sp1,sp2;
 
     private ListenerRegistration firestoreListener;
     private FirebaseFirestore firestoreDB = FirebaseFirestore.getInstance();
-    private CollectionReference matchRef = firestoreDB.collection("Solo Registration");
+    private CollectionReference matchRef = firestoreDB.collection("Match List");
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -52,12 +55,19 @@ public class AFSolo extends AppCompatActivity {
         mapLists = new ArrayList<>();
         loadMatchList();
 
+        sp1 = getSharedPreferences("signupKey", MODE_PRIVATE);
+        sID = sp1.getString("value", "");
+        sp2 = getSharedPreferences("loginKey",MODE_PRIVATE);
+        lID = sp2.getString("value","");
+        playerID = sID+"-"+lID;
+
         Bundle bundle = getIntent().getExtras();
-        assert bundle != null;
+        if(bundle != null){
 //        id = bundle.getString("id");
         Log.d("AF","id:"+id);
+        }
 
-        firestoreListener = matchRef.whereEqualTo("player1","abcd")
+        firestoreListener = matchRef.whereArrayContains("players", playerID)
                 .addSnapshotListener(new EventListener<QuerySnapshot>() {
                     @Override
                     public void onEvent(@Nullable QuerySnapshot queryDocumentSnapshots, @Nullable FirebaseFirestoreException e) {
@@ -83,8 +93,7 @@ public class AFSolo extends AppCompatActivity {
     }
 
     private void loadMatchList() {
-        matchRef
-                .get().addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
+        matchRef.get().addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
             @Override
             public void onComplete(@NonNull Task<QuerySnapshot> task) {
 
