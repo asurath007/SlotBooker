@@ -172,6 +172,7 @@
         android:orientation="horizontal"
         android:layout_centerHorizontal="true"
         android:layout_below="@+id/tv_support_home"
+
         >
 
         <Button

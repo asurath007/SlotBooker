@@ -10,6 +10,6 @@ public class AFSoloDetail extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.a_f_solo_details);
+        setContentView(R.layout.after_payment_details);
     }
 }

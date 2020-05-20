@@ -31,9 +31,8 @@ import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.QuerySnapshot;
 import com.razorpay.Checkout;
 import com.razorpay.PaymentResultListener;
-import com.slotbooker.AfterPayment.AFSolo;
+import com.slotbooker.AfterPayment.AfterPayment;
 import com.slotbooker.R;
-import com.slotbooker.Payment.RazorPay.RazorPay_Activity;
 
 import org.json.JSONObject;
 
@@ -250,7 +249,7 @@ public class Squad extends AppCompatActivity implements AdapterView.OnItemSelect
             //creating array of players in the match detail list
             db.collection("Match List").document(uID).update("players", FieldValue.arrayUnion(playerID));
 
-            Intent intent = new Intent(Squad.this, AFSolo.class);
+            Intent intent = new Intent(Squad.this, AfterPayment.class);
             intent.putExtra("id",uID);
             startActivity(intent);
             finish();

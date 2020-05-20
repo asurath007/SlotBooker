@@ -17,9 +17,7 @@
         android:roundIcon="@mipmap/ic_launcher_icon_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-        <activity android:name=".AfterPayment.AFSquad"></activity>
-        <activity android:name=".AfterPayment.AFDuo" />
-        <activity android:name=".AfterPayment.AFSolo" />
+        <activity android:name=".AfterPayment.AfterPayment" />
         <!-- [RazorPay API Key] -->
         <meta-data
             android:name="com.razorpay.ApiKey"

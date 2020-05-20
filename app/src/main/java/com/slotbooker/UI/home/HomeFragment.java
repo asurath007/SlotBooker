@@ -133,6 +133,12 @@ public class HomeFragment extends Fragment implements PaymentResultListener {
                         startActivity(intent);
                     }
                 });
+                iv2.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        Toast.makeText(getActivity(),"No COD matches found", Toast.LENGTH_LONG).show();
+                    }
+                });
             }
 
             //check if app installed

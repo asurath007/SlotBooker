@@ -32,7 +32,7 @@ import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.QuerySnapshot;
 import com.razorpay.Checkout;
 import com.razorpay.PaymentResultListener;
-import com.slotbooker.AfterPayment.AFSolo;
+import com.slotbooker.AfterPayment.AfterPayment;
 import com.slotbooker.R;
 
 import org.json.JSONObject;
@@ -240,7 +240,7 @@ public class Duo extends AppCompatActivity implements AdapterView.OnItemSelected
             //creating array of players in the match detail list
             db.collection("Match List").document(uID).update("players",FieldValue.arrayUnion(playerID));
 
-            Intent intent = new Intent(Duo.this, AFSolo.class);
+            Intent intent = new Intent(Duo.this, AfterPayment.class);
             intent.putExtra("id",uID);
             startActivity(intent);
             finish();

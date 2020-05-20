@@ -93,7 +93,7 @@ public class ProfileActivity extends AppCompatActivity {
         }
 //        String uid = user.getUid();
         //getting doc id
-        SharedPreferences sharedPreferences = getSharedPreferences("myKey", MODE_PRIVATE);
+        SharedPreferences sharedPreferences = getApplicationContext().getSharedPreferences("loginKey", MODE_PRIVATE);
         final String uID = sharedPreferences.getString("value","");
         Log.d("Prof","id: "+uID);
 
@@ -155,7 +155,7 @@ public class ProfileActivity extends AppCompatActivity {
     }
 
     private void loadUserDetails() {
-        SharedPreferences sharedPreferences = getSharedPreferences("myKey", MODE_PRIVATE);
+        SharedPreferences sharedPreferences = getApplicationContext().getSharedPreferences("loginKey", MODE_PRIVATE);
         String uID = sharedPreferences.getString("value","");
         userRef.document(uID).get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
             @Override

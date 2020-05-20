@@ -150,7 +150,7 @@ public class SignUpActivity extends AppCompatActivity {
 
                                                             String name = task.getResult().getString("userName");
                                                             String id = (documentReference.getId());
-                                                            Log.d("TASK","ID:"+id);
+                                                            Log.d("KEY","SID:"+id);
                                                             //passing doc id
                                                             SharedPreferences sharedPref = getSharedPreferences("signupKey", MODE_PRIVATE);
                                                             SharedPreferences.Editor editor = sharedPref.edit();

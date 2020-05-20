@@ -9,7 +9,6 @@ import androidx.recyclerview.widget.RecyclerView;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.util.Log;
-import android.widget.TextView;
 import android.widget.Toast;
 
 import com.google.android.gms.tasks.OnCompleteListener;
@@ -17,22 +16,19 @@ import com.google.android.gms.tasks.Task;
 import com.google.firebase.firestore.CollectionReference;
 import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.EventListener;
-import com.google.firebase.firestore.FieldValue;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.FirebaseFirestoreException;
 import com.google.firebase.firestore.ListenerRegistration;
 import com.google.firebase.firestore.QuerySnapshot;
 import com.slotbooker.Adapter.AfterPaymentAdapter;
-import com.slotbooker.Adapter.MapAdapter;
 import com.slotbooker.Adapter.Model.MapList;
 import com.slotbooker.R;
-import com.slotbooker.UI.SoloMapSelector;
 
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
 
-public class AFSolo extends AppCompatActivity {
+public class AfterPayment extends AppCompatActivity {
     private static final String TAG = "After Payment";
     private RecyclerView recyclerView;
     private RecyclerView.Adapter mapAdapter;
@@ -47,7 +43,7 @@ public class AFSolo extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.a_f_solo);
+        setContentView(R.layout.after_payment);
         recyclerView = findViewById(R.id.rv_map_af_solo);
         recyclerView.setHasFixedSize(true);
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
@@ -107,7 +103,7 @@ public class AFSolo extends AppCompatActivity {
                         getMatchList.add(match);
                     }
                 } else {
-                    Toast.makeText(AFSolo.this, "Error getting Match List", Toast.LENGTH_LONG).show();
+                    Toast.makeText(AfterPayment.this, "Error getting Match List", Toast.LENGTH_LONG).show();
                 }
             }
         });

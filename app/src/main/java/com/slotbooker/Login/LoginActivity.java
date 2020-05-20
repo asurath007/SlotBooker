@@ -201,7 +201,7 @@ public class LoginActivity extends AppCompatActivity {
                                                     ud.setEmail(snapshot.getString("userEmail"));
                                                     ud.setUserName(snapshot.getString("userName"));
                                                     ud.setId(snapshot.getId());
-                                                    Log.d("KEY","ID:"+snapshot.getId());
+                                                    Log.d("KEY","LID:"+snapshot.getId());
                                                     //pass id to fetch prof info
                                                     SharedPreferences sharedPref = getSharedPreferences("loginKey", MODE_PRIVATE);
                                                     SharedPreferences.Editor editor = sharedPref.edit();
